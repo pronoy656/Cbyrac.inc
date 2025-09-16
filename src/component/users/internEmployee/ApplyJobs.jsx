@@ -1,136 +1,38 @@
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Label } from "../../ui/Label";
-import { Input } from "../../ui/Input";
-import { Textarea } from "../../ui/Textarea";
-import { Button } from "../../ui/Button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/Select";
+
 import TimeSheet from "./TimeSheet";
+import ProgressBar from "../../progressBar/ProgressBar";
+import { useForm } from "react-hook-form";
 
 const ApplyJobs = () => {
   const [step, setStep] = useState(1); // track current step
-  const [formData, setFormData] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    socialSecurity: "",
-    dateOfBirth: "",
-    applicationDate: "",
-    telephoneNumber: "",
-    emailAddress: "",
-    address: "",
-    emergencyContactName: "",
-    emergencyContactPhone: "",
-    emergencyContactRelation: "",
-    employmentDesired: "",
-    desiredSalary: "",
-    hourlyRate: "",
-    positionAppliedFor: "",
-    department: "",
-    overtime: "",
-    dateCanStart: "",
-    previouslyApplied: "",
-    appliedBefore: "",
-    everEmployed: "",
-    employmentDetails: "",
-    specialSkills: "",
-    highSchoolGraduationStatus: "",
-  });
-
-  // TimeSheet form data
-  const [timesheetData, setTimesheetData] = useState({
-    hoursWorked: "",
-    taskDetails: "",
-  });
-
-  // SetForm data handler
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  //SetTimeSheet data handler
-  const handleTimesheetChange = (field, value) => {
-    setTimesheetData((prev) => ({ ...prev, [field]: value }));
-  };
+  const totalSteps = 3; // total number of steps for progress bar
 
   //previous and next button logic
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  //Handle Submit (2 forms)
-  const handleSubmit = () => {
-    console.log("ApplyJobs Data:", formData);
-    console.log("Timesheet Data:", timesheetData);
-    alert("Form submitted! Check console for data.");
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  // Fixed Gradient Input
-  const GradientInput = ({
-    id,
-    value,
-    onChange,
-    placeholder = "",
-    type = "text",
-  }) => {
-    return (
-      <div className="rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]">
-        <input
-          id={id}
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0"
-        />
-      </div>
-    );
+  const onSubmit = (data) => {
+    console.log("Form Data Submitted:", data);
+    alert("Form submitted successfully! Check console.");
   };
-
-  // Fixed Gradient Textarea
-
-  const GradientTextarea = ({ id, value, onChange, placeholder = "" }) => {
-    return (
-      <div className="rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]">
-        <textarea
-          id={id}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0 min-h-[120px]"
-        />
-      </div>
-    );
-  };
-  // Fixed Gradient Select
-  const GradientSelect = ({
-    value = "",
-    onValueChange,
-    placeholder = "",
-    children,
-    ...rest
-  }) => (
-    <div className="rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[2px]">
-      <Select value={value} onValueChange={onValueChange} {...rest}>
-        <SelectTrigger className="block w-full h-full rounded-md bg-slate-900 text-white focus:outline-none focus:ring-0 py-2 px-3">
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>{children}</SelectContent>
-      </Select>
-    </div>
-  );
+  const inputWrapperClass =
+    "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
+  const inputClass =
+    "w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0";
   return (
     <div>
       {step === 1 && (
         <div className="text-white ">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex space-x-96 mb-4">
               <div className="text-sm">
                 <div className="font-bold text-lg mb-2">CBYRAC, INC</div>
                 <div>123 MAIN STREET SUITE 100</div>
@@ -138,10 +40,8 @@ const ApplyJobs = () => {
                 <div>PHONE: 555-555-5555</div>
                 <div>EMAIL: info@cbyrac.com</div>
               </div>
-              <div className="w-20 h-20 bg-white rounded flex items-center justify-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#8D6851] to-[#D3BFB2] rounded flex items-center justify-center">
-                  <div className="text-slate-900 font-bold text-xl">C</div>
-                </div>
+              <div className="w-24 h-24 bg-white rounded justify-center">
+                <img src="/cbyrac-logo.png" alt="" />
               </div>
             </div>
 
@@ -150,464 +50,534 @@ const ApplyJobs = () => {
               <h1 className="text-2xl font-bold mb-2">
                 Employment Application
               </h1>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-gray-300 mb-7">
                 Please fill all forms, signatures are not a substitute for a
                 completed application
               </p>
-              <div className="w-full h-3 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-4"></div>
+              {/* progressbar */}
+              <ProgressBar currentStep={step} totalSteps={totalSteps} />
             </div>
-
-            <form className="space-y-8">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="rounded-2xl  max-w-7xl mx-auto"
+            >
               {/* General Information */}
-              <section>
-                <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-[#8C6750]">
-                  General Information
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <Label htmlFor="firstName">First Name</Label>
-                    <GradientInput
-                      id="firstName"
-                      value={formData.firstName}
-                      onChange={(e) =>
-                        handleInputChange("firstName", e.target.value)
-                      }
+              <h2 className="text-xl font-bold text-white mb-4">
+                General Information
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="text-white mb-1 block">First Name</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
                       placeholder="Enter First Name"
+                      {...register("firstName", {
+                        required: "First Name is required",
+                      })}
+                      className={inputClass}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="middleName">Middle Name</Label>
-                    <GradientInput
-                      id="middleName"
-                      value={formData.middleName}
-                      onChange={(e) =>
-                        handleInputChange("middleName", e.target.value)
-                      }
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm">
+                      {errors.firstName.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Middle Name</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
                       placeholder="Enter Middle Name"
+                      {...register("middleName")}
+                      className={inputClass}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <GradientInput
-                      id="lastName"
-                      value={formData.lastName}
-                      onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
-                      }
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Last Name</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
                       placeholder="Enter Last Name"
+                      {...register("lastName", {
+                        required: "Last Name is required",
+                      })}
+                      className={inputClass}
                     />
                   </div>
-                </div>
-
-                {/* Social, DOB, Application Date */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <Label htmlFor="socialSecurity">
-                      Social Security Number
-                    </Label>
-                    <GradientInput
-                      id="socialSecurity"
-                      value={formData.socialSecurity}
-                      onChange={(e) =>
-                        handleInputChange("socialSecurity", e.target.value)
-                      }
-                      placeholder="Enter SSN"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="dateOfBirth">Date Of Birth</Label>
-                    <GradientInput
-                      id="dateOfBirth"
-                      type="date"
-                      value={formData.dateOfBirth}
-                      onChange={(e) =>
-                        handleInputChange("dateOfBirth", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="applicationDate">Application Date</Label>
-                    <GradientInput
-                      id="applicationDate"
-                      type="date"
-                      value={formData.applicationDate}
-                      onChange={(e) =>
-                        handleInputChange("applicationDate", e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-
-                {/* Phone and Email */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <Label htmlFor="telephoneNumber">Telephone Number</Label>
-                    <GradientInput
-                      id="telephoneNumber"
-                      value={formData.telephoneNumber}
-                      onChange={(e) =>
-                        handleInputChange("telephoneNumber", e.target.value)
-                      }
-                      placeholder="Enter Telephone Number"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="emailAddress">Email Address</Label>
-                    <GradientInput
-                      id="emailAddress"
-                      type="email"
-                      value={formData.emailAddress}
-                      onChange={(e) =>
-                        handleInputChange("emailAddress", e.target.value)
-                      }
-                      placeholder="Enter Email Address"
-                    />
-                  </div>
-                </div>
-
-                {/* Address */}
-                <div className="mb-4">
-                  <Label htmlFor="address">Address</Label>
-                  <GradientInput
-                    id="address"
-                    value={formData.address}
-                    onChange={(e) =>
-                      handleInputChange("address", e.target.value)
-                    }
-                    placeholder="Street / Apartment / City / State / Zip"
-                  />
-                </div>
-
-                {/* Emergency Contact */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <Label htmlFor="emergencyContactName">
-                      Emergency Contact Name
-                    </Label>
-                    <GradientInput
-                      id="emergencyContactName"
-                      value={formData.emergencyContactName}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "emergencyContactName",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Enter Name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="emergencyContactPhone">Relation</Label>
-                    <GradientInput
-                      id="emergencyContactPhone"
-                      value={formData.emergencyContactPhone}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "emergencyContactPhone",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Enter Relation"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="emergencyContactRelation">
-                      Emergency Phone
-                    </Label>
-                    <GradientInput
-                      id="emergencyContactRelation"
-                      value={formData.emergencyContactRelation}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "emergencyContactRelation",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Enter Phone"
-                    />
-                  </div>
-                </div>
-
-                {/* Employment Desired */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <Label>Type of Employment Desired</Label>
-                    <GradientSelect
-                      value={formData.employmentDesired}
-                      onValueChange={(value) =>
-                        handleInputChange("employmentDesired", value)
-                      }
-                      placeholder="Select Employment"
-                    >
-                      <SelectItem value="full-time">Full Time</SelectItem>
-                      <SelectItem value="part-time">Part Time</SelectItem>
-                      <SelectItem value="contract">Contract</SelectItem>
-                      <SelectItem value="temporary">Temporary</SelectItem>
-                    </GradientSelect>
-                  </div>
-                  <div>
-                    <Label htmlFor="desiredSalary">Desired Salary</Label>
-                    <GradientInput
-                      id="desiredSalary"
-                      value={formData.desiredSalary}
-                      onChange={(e) =>
-                        handleInputChange("desiredSalary", e.target.value)
-                      }
-                      placeholder="Enter Salary"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="hourlyRate">Hourly Rate (Optional)</Label>
-                    <GradientInput
-                      id="hourlyRate"
-                      value={formData.hourlyRate}
-                      onChange={(e) =>
-                        handleInputChange("hourlyRate", e.target.value)
-                      }
-                      placeholder="Enter Hourly"
-                    />
-                  </div>
-                </div>
-
-                {/* Position */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <Label htmlFor="positionAppliedFor">
-                      Position Applied For
-                    </Label>
-                    <GradientInput
-                      id="positionAppliedFor"
-                      value={formData.positionAppliedFor}
-                      onChange={(e) =>
-                        handleInputChange("positionAppliedFor", e.target.value)
-                      }
-                      placeholder="Enter Position"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="department">Department</Label>
-                    <GradientInput
-                      id="department"
-                      value={formData.department}
-                      onChange={(e) =>
-                        handleInputChange("department", e.target.value)
-                      }
-                      placeholder="Enter Department"
-                    />
-                  </div>
-                  <div>
-                    <Label>Overtime</Label>
-                    <GradientSelect
-                      value={formData.overtime}
-                      onValueChange={(value) =>
-                        handleInputChange("overtime", value)
-                      }
-                      placeholder="Select"
-                    >
-                      <SelectItem value="yes">Yes</SelectItem>
-                      <SelectItem value="no">No</SelectItem>
-                    </GradientSelect>
-                  </div>
-                </div>
-
-                {/* Date Can Start */}
-                <div className="mb-4">
-                  <Label htmlFor="dateCanStart">Date You Can Start</Label>
-                  <GradientInput
-                    id="dateCanStart"
-                    type="date"
-                    value={formData.dateCanStart}
-                    onChange={(e) =>
-                      handleInputChange("dateCanStart", e.target.value)
-                    }
-                  />
-                </div>
-
-                {/* Previously Applied */}
-                <div className="mb-4">
-                  <Label>Previously Applied?</Label>
-                  <GradientSelect
-                    value={formData.previouslyApplied}
-                    onValueChange={(value) =>
-                      handleInputChange("previouslyApplied", value)
-                    }
-                    placeholder="Select"
-                  >
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                  </GradientSelect>
-                </div>
-
-                <div className="mb-4">
-                  <Label htmlFor="appliedBefore">If Yes, When and Where</Label>
-                  <GradientInput
-                    id="appliedBefore"
-                    value={formData.appliedBefore}
-                    onChange={(e) =>
-                      handleInputChange("appliedBefore", e.target.value)
-                    }
-                    placeholder="Enter Details"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <Label>Ever Employed Before?</Label>
-                  <GradientSelect
-                    value={formData.everEmployed}
-                    onValueChange={(value) =>
-                      handleInputChange("everEmployed", value)
-                    }
-                    placeholder="Select"
-                  >
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                  </GradientSelect>
-                </div>
-
-                <div className="mb-4">
-                  <Label htmlFor="employmentDetails">
-                    If Yes, Provide Details
-                  </Label>
-                  <GradientInput
-                    id="employmentDetails"
-                    value={formData.employmentDetails}
-                    onChange={(e) =>
-                      handleInputChange("employmentDetails", e.target.value)
-                    }
-                    placeholder="Enter Details"
-                  />
-                </div>
-              </section>
-
-              {/* Educational Info (just showing one row as example) */}
-              <section>
-                <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-[#8C6750]">
-                  Educational Information
-                </h2>
-
-                <div className="h-[150px]">
-                  <table className="w-full border-collapse border border-[#8C6750] table-fixed">
-                    <thead>
-                      <tr className="bg-gray-800">
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          Education
-                        </th>
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          School Name
-                        </th>
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          Study / Major
-                        </th>
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          Graduation Status
-                        </th>
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          # Of Years
-                        </th>
-                        <th className="border border-[#8C6750] p-2 text-left text-sm">
-                          Honors
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="border border-[#8C6750] p-2 text-sm">
-                          High School
-                        </td>
-                        <td className="border border-[#8C6750] p-2">
-                          <GradientInput />
-                        </td>
-                        <td className="border border-[#8C6750] p-2">
-                          <GradientInput />
-                        </td>
-                        <td className="border border-[#8C6750] p-2">
-                          <GradientSelect
-                            value={formData.highSchoolGraduationStatus}
-                            onValueChange={(value) =>
-                              handleInputChange(
-                                "highSchoolGraduationStatus",
-                                value
-                              )
-                            }
-                            placeholder="Select"
-                          >
-                            <SelectItem value="graduated">Graduated</SelectItem>
-                            <SelectItem value="in-progress">
-                              In Progress
-                            </SelectItem>
-                            <SelectItem value="incomplete">
-                              Incomplete
-                            </SelectItem>
-                          </GradientSelect>
-                        </td>
-                        <td className="border border-[#8C6750] p-2">
-                          <GradientInput />
-                        </td>
-                        <td className="border border-[#8C6750] p-2">
-                          <GradientInput />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-
-              {/* Skills */}
-              <section>
-                <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-[#8C6750]">
-                  Special Skills
-                </h2>
-                <GradientTextarea
-                  id="specialSkills"
-                  value={formData.specialSkills}
-                  onChange={(e) =>
-                    handleInputChange("specialSkills", e.target.value)
-                  }
-                  placeholder="Enter skills..."
-                />
-              </section>
-
-              {/* Signature */}
-              <section>
-                <div className="mb-4">
-                  <Label>Employee Signature - Thumb or Upload</Label>
-                  <div className="mt-2">
-                    <Button
-                      type="button"
-                      className="bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] hover:from-[#7A5A47] hover:to-[#C4AFA0] text-white px-8 py-2"
-                    >
-                      Choose File
-                    </Button>
-                    <span className="ml-3 text-sm text-gray-400">
-                      No file chosen
-                    </span>
-                  </div>
-                </div>
-              </section>
-
-              {/* Navigation Buttons */}
-              <div className="flex justify-center pt-6">
-                <div className="flex items-center">
-                  <Button
-                    type="button"
-                    className="flex items-center text-white"
-                    style={{ background: "none", boxShadow: "none" }}
-                  >
-                    <ChevronLeft className="mr-2 w-6 h-6" /> Previous
-                  </Button>
-                  <p>.......</p>
-                  <Button
-                    type="button"
-                    onClick={nextStep}
-                    className="flex items-center text-white "
-                    style={{ background: "none", boxShadow: "none" }}
-                  >
-                    Next <ChevronRight className="ml-2 w-6 h-6" />
-                  </Button>
+                  {errors.lastName && (
+                    <p className="text-red-500 text-sm">
+                      {errors.lastName.message}
+                    </p>
+                  )}
                 </div>
               </div>
+
+              {/* SSN, DOB, Application Date */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="text-white mb-1 block">SSN</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter SSN"
+                      {...register("ssn", { required: "SSN is required" })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.ssn && (
+                    <p className="text-red-500 text-sm">{errors.ssn.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Date of Birth</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="date"
+                      {...register("dob", {
+                        required: "Date of Birth is required",
+                      })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.dob && (
+                    <p className="text-red-500 text-sm">{errors.dob.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">
+                    Application Date
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="date"
+                      {...register("applicationDate", {
+                        required: "Application Date is required",
+                      })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.applicationDate && (
+                    <p className="text-red-500 text-sm">
+                      {errors.applicationDate.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Additional General Info */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="text-white mb-1 block">
+                    Telephone Number
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter Telephone Number"
+                      {...register("telephone")}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Email Address</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="email"
+                      placeholder="Enter Email Address"
+                      {...register("email")}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="text-white mb-1 block">Address</label>
+                <div className={inputWrapperClass}>
+                  <input
+                    type="text"
+                    placeholder="Street/Apartment/City/State/ZIP"
+                    {...register("address")}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              {/* Emergency Contact */}
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 mt-4">
+                <div>
+                  <label className="text-white mb-3 block">
+                    Emergency Contact Person Name *
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter Name"
+                      {...register("emergencyName", { required: "Required" })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.emergencyName && (
+                    <p className="text-red-500 text-sm">
+                      {errors.emergencyName.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-white mb-3  block">
+                    Relation With Emergency Contact Person *
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Relation"
+                      {...register("emergencyRelation", {
+                        required: "Required",
+                      })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.emergencyRelation && (
+                    <p className="text-red-500 text-sm">
+                      {errors.emergencyRelation.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-white mb-3  block">
+                    Emergency Contact Person’s Telephone *
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Telephone"
+                      {...register("emergencyTelephone", {
+                        required: "Required",
+                      })}
+                      className={inputClass}
+                    />
+                  </div>
+                  {errors.emergencyTelephone && (
+                    <p className="text-red-500 text-sm">
+                      {errors.emergencyTelephone.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="text-white mb-1 block">
+                    Type of Employment Desired
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <select
+                      {...register("employmentType")}
+                      className={inputClass}
+                    >
+                      <option value="">Select</option>
+                      <option value="intern">Intern</option>
+                      <option value="temp">Temp Employee</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">
+                    Desired Salary
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter Desired Salary"
+                      {...register("desiredSalary")}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">
+                    Hourly Rate (Optional)
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter Hourly Rate"
+                      {...register("hourlyRate")}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Position & Department */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="text-white mb-1 block">
+                    Position Applied For
+                  </label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      value="Intern"
+                      readOnly
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Department</label>
+                  <div className={inputWrapperClass}>
+                    <input
+                      type="text"
+                      placeholder="Enter Department"
+                      {...register("department")}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-white mb-1 block">Overtime</label>
+                  <div className={inputWrapperClass}>
+                    <select {...register("overtime")} className={inputClass}>
+                      <option value="">Select</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Start Date */}
+              <div>
+                <label className="text-white mb-1 block">
+                  Date On Which You Can Start Work If Hired
+                </label>
+                <div className={inputWrapperClass}>
+                  <input
+                    type="date"
+                    {...register("startDate")}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              {/* Previous Application */}
+
+              <div>
+                <label className="text-white mb-1 block">
+                  Have You Previously Applied For Employment With This Company?
+                </label>
+                <div className={inputWrapperClass}>
+                  <select
+                    {...register("previousApplication")}
+                    className={inputClass}
+                  >
+                    <option value="">Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-white mb-1 block">
+                  If Yes, When and Where Did You Apply
+                </label>
+                <div className={inputWrapperClass}>
+                  <input
+                    type="text"
+                    placeholder="Enter details"
+                    {...register("applicationDetails")}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-white mb-1 block">
+                  Have You Ever Been Employed By This Company?
+                </label>
+                <div className={inputWrapperClass}>
+                  <select
+                    {...register("previousEmployment")}
+                    className={inputClass}
+                  >
+                    <option value="">Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-white mb-1 block">
+                  If Yes, Provide Dates, Location and Reason For Separation
+                </label>
+                <div className={inputWrapperClass}>
+                  <textarea
+                    placeholder="Provide details"
+                    {...register("employmentDetails")}
+                    className={inputClass + " h-24"}
+                  />
+                </div>
+              </div>
+              {/* Educational Information */}
+              <h2 className="text-xl font-bold text-white my-4">
+                Educational Information
+              </h2>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-[#8D6851] text-white rounded-lg">
+                  <thead>
+                    <tr className="bg-slate-900 text-left">
+                      <th className="border border-[#8D6851] px-4 py-2 w-34">
+                        Education
+                      </th>
+                      <th className="border border-[#8D6851] px-4 py-2">
+                        School Name
+                      </th>
+                      <th className="border border-[#8D6851] px-4 py-2">
+                        Study / Major
+                      </th>
+                      <th className="border border-[#8D6851] px-4 py-2">
+                        Graduation Status
+                      </th>
+                      <th className="border border-[#8D6851] px-4 py-2">
+                        # Of Years Completed
+                      </th>
+                      <th className="border border-[#8D6851] px-4 py-2">
+                        Honors Received
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* High School Row */}
+                    <tr>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        High School
+                      </td>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        <input
+                          type="text"
+                          placeholder="Enter School Name"
+                          {...register("highSchoolName")}
+                          className="w-full bg-slate-900 text-white px-2 py-1 rounded focus:outline-none"
+                        />
+                      </td>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        <input
+                          type="text"
+                          placeholder="Study / Major"
+                          {...register("highSchoolMajor")}
+                          className="w-full bg-slate-900 text-white px-2 py-1 rounded focus:outline-none"
+                        />
+                      </td>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        <select
+                          {...register("highSchoolGraduationStatus")}
+                          className="w-full bg-slate-900 text-white px-2 py-1 rounded focus:outline-none"
+                        >
+                          <option value="">Select</option>
+                          <option value="graduated">Graduated</option>
+                          <option value="notGraduated">Not Graduated</option>
+                        </select>
+                      </td>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        <input
+                          type="number"
+                          placeholder="Years"
+                          {...register("highSchoolYears")}
+                          className="w-full bg-slate-900 text-white px-2 py-1 rounded focus:outline-none"
+                        />
+                      </td>
+                      <td className="border border-[#8D6851] px-4 py-2">
+                        <input
+                          type="text"
+                          placeholder="Honors"
+                          {...register("highSchoolHonors")}
+                          className="w-full bg-slate-900 text-white px-2 py-1 rounded focus:outline-none"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Special Skills or Qualifications */}
+              <div className="mb-6">
+                <label className="text-xl font-bold text-white">
+                  Special Skills or Qualifications
+                </label>
+                <div className={inputWrapperClass}>
+                  <textarea
+                    placeholder="Describe your special skills or qualifications"
+                    {...register("skills")}
+                    className={inputClass + " h-24"}
+                  />
+                </div>
+              </div>
+
+              {/* Employee Signature */}
+              <div className="mb-6">
+                <label className="text-white block mb-1">
+                  Employee Signature * (Take a Picture of your signature For
+                  Upload)
+                </label>
+                <div className="w-[410px] h-[50px] bg-gradient-to-l from-[#8D6851] to-[#D4BFB2] rounded-md mt-1 flex items-center justify-center">
+                  <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
+                    <span className="text-center">Upload Signature</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      {...register("employeeSignature", {
+                        required: "Signature is required",
+                      })}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                {errors.employeeSignature && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employeeSignature.message}
+                  </p>
+                )}
+              </div>
+              {/* <button>submit</button> */}
             </form>
+            <div className="flex justify-center mt-6 gap-4">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              >
+                Previous
+              </button>
+
+              <button
+                type="button"
+                onClick={nextStep}
+                className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -616,15 +586,7 @@ const ApplyJobs = () => {
         <div>
           <TimeSheet
             prevStep={prevStep}
-            // Pass ApplyJobs form data
-            formData={formData}
-            // Pass TimeSheetData form data
-            timesheetData={timesheetData}
-            //  //Pass handleInputChange data for form data
-            handleInputChange={handleInputChange}
-            //Pass  handleTimeSheetChange data for timeSheet form data
-            handleTimesheetChange={handleTimesheetChange}
-            // Pass  handleSubmit data for both forms
+            nextStep={nextStep}
             handleSubmit={handleSubmit}
           ></TimeSheet>
         </div>
