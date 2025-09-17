@@ -97,12 +97,8 @@ const InternSidebar = () => {
       {/* Header */}
       <div className="p-6">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-blue-600 rounded-sm flex items-center justify-center">
-            <span className="text-white text-xs font-bold">C</span>
-          </div>
-          <span className="text-sidebar-foreground font-semibold text-lg">
-            Clayracine
-          </span>
+          <img className="w-14 h-14" src="/cbyrac-logo.png" alt="" />
+          <p className="text-xl font-bold"> Cbyrac, Inc</p>
         </div>
       </div>
 

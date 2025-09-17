@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import TimeSheet from "./TimeSheet";
 import ProgressBar from "../../progressBar/ProgressBar";
 import { useForm } from "react-hook-form";
+import BankAccount from "./BankAccount";
+import I9Form from "./I9Form";
 
 const ApplyJobs = () => {
   const [step, setStep] = useState(1); // track current step
@@ -536,11 +538,11 @@ const ApplyJobs = () => {
 
               {/* Employee Signature */}
               <div className="mb-6">
-                <label className="text-white block mb-1">
+                <label className="text-white block mb-2">
                   Employee Signature * (Take a Picture of your signature For
                   Upload)
                 </label>
-                <div className="w-[410px] h-[50px] bg-gradient-to-l from-[#8D6851] to-[#D4BFB2] rounded-md mt-1 flex items-center justify-center">
+                <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851]  rounded-md mt-1 flex items-center justify-center">
                   <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
                     <span className="text-center">Upload Signature</span>
                     <input
@@ -584,12 +586,25 @@ const ApplyJobs = () => {
       {/* Future steps can be added here */}
       {step === 2 && (
         <div>
-          <TimeSheet
+          <BankAccount
             prevStep={prevStep}
             nextStep={nextStep}
+            register={register}
+            step={step}
+            errors={errors}
             handleSubmit={handleSubmit}
-          ></TimeSheet>
+          ></BankAccount>
         </div>
+      )}
+      {step === 3 && (
+        <I9Form
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit(onSubmit)}
+        />
       )}
     </div>
   );
