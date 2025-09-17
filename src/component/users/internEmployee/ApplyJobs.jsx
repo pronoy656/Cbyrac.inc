@@ -5,10 +5,12 @@ import ProgressBar from "../../progressBar/ProgressBar";
 import { useForm } from "react-hook-form";
 import BankAccount from "./BankAccount";
 import I9Form from "./I9Form";
+import W4Form from "./W4Form";
+import SelectCitizenship from "./SelectCitizenship";
 
 const ApplyJobs = () => {
   const [step, setStep] = useState(1); // track current step
-  const totalSteps = 3; // total number of steps for progress bar
+  const totalSteps = 5; // total number of steps for progress bar
 
   //previous and next button logic
   const nextStep = () => setStep((prev) => prev + 1);
@@ -598,6 +600,26 @@ const ApplyJobs = () => {
       )}
       {step === 3 && (
         <I9Form
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit(onSubmit)}
+        />
+      )}
+      {step === 4 && (
+        <W4Form
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit(onSubmit)}
+        />
+      )}
+      {step === 5 && (
+        <SelectCitizenship
           register={register}
           errors={errors}
           prevStep={prevStep}
