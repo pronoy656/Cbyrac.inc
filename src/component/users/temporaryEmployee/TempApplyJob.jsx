@@ -8,6 +8,14 @@ import WorkExperienceForm from "./WorkExperienceForm";
 import References from "./References";
 import DrivingInfoForm from "./DrivingInfoForm";
 import TermsText from "./TermsText";
+import OnlyCbyracInc from "./OnlyCbyracInc";
+import CertificationText from "./CertificationText";
+import InjuriesProcedures from "./InjuriesProcedures";
+import AllPolicy from "./AllPolicy";
+import TempBankAccount from "./TempBankAccount";
+import TempI9Form from "./TempI9Form";
+import TempW4Form from "./TempW4Form";
+import TempSelectCitizenShip from "./TempSelectCitizenShip";
 
 const TempApplyJob = () => {
   const [step, setStep] = useState(1); // track current step
@@ -770,6 +778,94 @@ const TempApplyJob = () => {
       )}
       {step === 5 && (
         <TermsText
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 6 && (
+        <OnlyCbyracInc
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 7 && (
+        <CertificationText
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 8 && (
+        <InjuriesProcedures
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 9 && (
+        <AllPolicy
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 10 && (
+        <TempBankAccount
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 11 && (
+        <TempI9Form
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 12 && (
+        <TempW4Form
+          register={register}
+          errors={errors}
+          prevStep={prevStep}
+          nextStep={nextStep}
+          step={step}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
+      )}
+      {step === 13 && (
+        <TempSelectCitizenShip
           register={register}
           errors={errors}
           prevStep={prevStep}
