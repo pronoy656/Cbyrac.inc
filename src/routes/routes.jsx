@@ -9,6 +9,8 @@ import SignIn from "../component/authentication/signIn/SignIn";
 import PasswordRecovery from "../component/authentication/signIn/PasswordRecovery";
 import ResetPassword from "../component/authentication/signIn/ResetPassword";
 import BankAccount from "../component/users/internEmployee/BankAccount";
+import TempMainLayout from "../component/layouts/tempEmployeeLayout/TempMainLayout";
+import TempApplyJob from "../component/users/temporaryEmployee/TempApplyJob";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,16 @@ const router = createBrowserRouter([
       {
         path: "/test-input",
         element: <TestInput></TestInput>,
+      },
+    ],
+  },
+  {
+    path: "/temporary-employee",
+    element: <TempMainLayout></TempMainLayout>,
+    children: [
+      {
+        path: "",
+        element: <TempApplyJob></TempApplyJob>,
       },
     ],
   },
