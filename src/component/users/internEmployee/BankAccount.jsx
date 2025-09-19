@@ -348,7 +348,7 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
                     readOnly
                     className={`${inputClass} pr-10`}
                   />
-                  <span className="absolute right-146 top-1/2 -translate-y-1/2 text-gray-200">
+                  <span className="absolute right-144 top-1/2 -translate-y-1/2 text-gray-200">
                     %
                   </span>
                 </div>
