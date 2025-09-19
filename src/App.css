@@ -1,0 +1,31 @@
+/* Global styles for table and RequestList adjustments */
+
+/* Slightly larger table data text for better readability */
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
+	font-size: 15px;
+	color: #ffffff; /* ensure text is white on dark background */
+}
+
+/* Custom row spacing and subtle hover */
+.custom-row td {
+	padding: 12px 16px;
+}
+.ant-table-tbody > tr.custom-row:hover > td {
+	background: rgba(255, 255, 255, 0.02);
+}
+
+/* Make AntD tags slightly bolder */
+.ant-tag {
+	font-weight: 600;
+}
+
+/* Ensure dropdown button icon is visible on dark bg */
+.ant-btn .anticon {
+	color: #fff;
+}
+
+/* Input prefix icon color override */
+.ant-input-prefix .anticon {
+	color: #b3b3b3;
+}
