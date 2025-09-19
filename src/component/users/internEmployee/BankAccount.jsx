@@ -22,6 +22,9 @@ const Button = ({ type = "button", className, onClick, children }) => (
 
 const BankAccount = ({ prevStep, nextStep, step }) => {
   const [selectedAccount, setSelectedAccount] = useState(null); // initially no form
+  // নতুন state
+  const [depositType, setDepositType] = useState(""); // deposit type রাখবে
+  const [selectedPercentage, setSelectedPercentage] = useState(0); // deposit percentage রাখবে
 
   const totalSteps = 3; // total number of steps for progress bar
 
@@ -213,8 +216,9 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
                 </div>
               </div>
             </div>
-            {/* Deposit Type */}
+            {/* // Deposit Type এবং Deposit Percentage logic here*/}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              {/* Deposit Type */}
               <div>
                 <label className="text-white mb-1 block">Deposit type *</label>
                 <div className={inputWrapperClass}>
@@ -222,6 +226,8 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
                     {...register("depositType", {
                       required: "Please select a deposit type",
                     })}
+                    value={depositType}
+                    onChange={(e) => setDepositType(e.target.value)}
                     className={`${inputClass} bg-[#05051A]`}
                   >
                     <option value="">Select</option>
@@ -236,30 +242,49 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
                 )}
               </div>
 
+              {/* Deposit Percentage */}
               <div>
                 <label className="text-white mb-1 block">
                   Deposit Percentage *
                 </label>
                 <div className={`${inputWrapperClass} relative`}>
-                  <input
-                    type="number"
-                    placeholder="Enter Percentage"
-                    {...register("percentage", {
-                      required: "Percentage is required",
-                      min: { value: 1, message: "Minimum 1%" },
-                      max: { value: 100, message: "Maximum 100%" },
-                    })}
-                    className={`${inputClass} pr-10`}
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                    %
-                  </span>
+                  {depositType === "full" ? (
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={100}
+                        readOnly
+                        className={`${inputClass} pr-10`}
+                      />
+                      <span className="absolute right-144 top-1/2 -translate-y-1/2 text-gray-200">
+                        %
+                      </span>
+                    </div>
+                  ) : depositType === "partial" ? (
+                    <select
+                      value={selectedPercentage}
+                      onChange={(e) =>
+                        setSelectedPercentage(Number(e.target.value))
+                      }
+                      className={`${inputClass} bg-[#05051A]`}
+                    >
+                      {Array.from({ length: 21 }, (_, i) => i * 5).map(
+                        (val) => (
+                          <option key={val} value={val}>
+                            {val}%
+                          </option>
+                        )
+                      )}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Select deposit type first"
+                      readOnly
+                      className={inputClass}
+                    />
+                  )}
                 </div>
-                {errors.percentage && (
-                  <p className="text-red-500 text-sm">
-                    {errors.percentage.message}
-                  </p>
-                )}
               </div>
             </div>
             {/*Transit/ABA No and Account No */}
@@ -308,20 +333,22 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Deposit Percentage *
+                  Deposit Percentage remaining*
                 </label>
                 <div className={`${inputWrapperClass} relative`}>
                   <input
                     type="number"
-                    placeholder="Enter Percentage"
-                    {...register("percentage", {
-                      required: "Percentage is required",
-                      min: { value: 1, message: "Minimum 1%" },
-                      max: { value: 100, message: "Maximum 100%" },
-                    })}
+                    value={
+                      depositType === "full"
+                        ? 0
+                        : depositType === "partial"
+                        ? 100 - selectedPercentage
+                        : ""
+                    }
+                    readOnly
                     className={`${inputClass} pr-10`}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                  <span className="absolute right-146 top-1/2 -translate-y-1/2 text-gray-200">
                     %
                   </span>
                 </div>
