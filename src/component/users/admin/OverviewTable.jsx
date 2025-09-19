@@ -12,7 +12,7 @@ const data = Array.from({ length: 20 }, (_, index) => ({
 const OverviewTable = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+  const pageSize = 10;
 
   // Filter data based on search text
   const filteredData = data.filter(
@@ -23,19 +23,24 @@ const OverviewTable = () => {
 
   const columns = [
     {
-      title: "User Name",
+      title: (
+        <span style={{ fontSize: "18px", fontWeight: "bold" }}>User Name</span>
+      ),
       dataIndex: "name",
       key: "name",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
     {
-      title: "Email",
+      title: <span style={{ fontWeight: "bold" }}>Email</span>,
       dataIndex: "email",
       key: "email",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
     {
-      title: "Joining Date",
+      title: <span style={{ fontWeight: "bold" }}>Joining Date</span>,
       dataIndex: "joiningDate",
       key: "joiningDate",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
   ];
 
@@ -47,14 +52,14 @@ const OverviewTable = () => {
   return (
     <div
       style={{
-        padding: "20px",
-
+        padding: "10px",
+        paddingTop: "50px",
         minHeight: "100vh",
       }}
     >
       <Input
         placeholder="Search here......."
-        className="!py-3.5"
+        className="!py-3.5 "
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         style={{ marginBottom: 20, width: 300 }}
@@ -62,17 +67,23 @@ const OverviewTable = () => {
 
       <Tabs
         defaultActiveKey="1"
-        style={{ marginBottom: 20 }}
-        tabBarStyle={{ color: "#fff" }}
+        style={{ marginBottom: 30 }}
+        tabBarStyle={{
+          color: "#fff",
+          fontSize: "28px",
+          fontWeight: "600", // টেক্সট একটু মোটা
+        }}
       >
         <TabPane
-          tab={<span style={{ color: "#fff" }}>Intern</span>}
+          tab={<span style={{ color: "#fff", fontSize: "28px" }}>Intern</span>}
           key="1"
-        ></TabPane>
+        />
         <TabPane
-          tab={<span style={{ color: "#fff" }}>Temporary</span>}
+          tab={
+            <span style={{ color: "#fff", fontSize: "28px" }}>Temporary</span>
+          }
           key="2"
-        ></TabPane>
+        />
       </Tabs>
 
       <Table
@@ -87,7 +98,7 @@ const OverviewTable = () => {
         }}
       />
 
-      <div style={{ marginTop: 20, textAlign: "left", color: "#fff" }}>
+      <div style={{ marginTop: 20, textAlign: "right", color: "#fff" }}>
         <Pagination
           current={currentPage}
           pageSize={pageSize}

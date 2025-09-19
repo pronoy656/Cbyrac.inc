@@ -495,12 +495,12 @@ const AdminCalender = () => {
               </label>
               <div
                 className={`w-14 h-14 rounded-full cursor-pointer border-4 ${
-                  textColor === "#F04D23"
+                  textColor === "#000000"
                     ? "border-blue-500"
                     : "border-transparent"
                 }`}
-                style={{ backgroundColor: "#919191" }}
-                onClick={() => setTextColor("#919191")}
+                style={{ backgroundColor: "#000000" }}
+                onClick={() => setTextColor("#000000")}
               />
             </div>
 

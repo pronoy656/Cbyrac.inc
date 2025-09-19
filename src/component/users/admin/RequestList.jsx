@@ -70,22 +70,27 @@ const RequestList = () => {
 
   const columns = [
     {
-      title: "User Name",
+      title: (
+        <span style={{ fontSize: "18px", fontWeight: "bold" }}>User Name</span>
+      ),
       dataIndex: "name",
       key: "name",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
     {
-      title: "Email",
+      title: <span style={{ fontWeight: "bold" }}>Email</span>,
       dataIndex: "email",
       key: "email",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
     {
-      title: "Joining Date",
+      title: <span style={{ fontWeight: "bold" }}>Joining Date</span>,
       dataIndex: "joiningDate",
       key: "joiningDate",
+      render: (text) => <span style={{ fontSize: "16px" }}>{text}</span>,
     },
     {
-      title: "Status",
+      title: <span style={{ fontWeight: "bold" }}>Status</span>,
       dataIndex: "status",
       key: "status",
       render: (status) => {
@@ -94,11 +99,11 @@ const RequestList = () => {
           <Tag
             style={{
               background: color,
-              color: "#111", // dark text for light backgrounds
+              color: "#111",
               fontWeight: 700,
               borderRadius: 8,
               padding: "4px 10px",
-              fontSize: 14,
+              fontSize: 16, // data text বড়
             }}
           >
             {status}
@@ -107,15 +112,16 @@ const RequestList = () => {
       },
     },
     {
-      title: "Action",
+      title: <span style={{ fontWeight: "bold" }}>Action</span>,
       key: "action",
       render: () => (
         <Dropdown overlay={actionMenu} trigger={["click"]}>
-          <Button icon={<MoreOutlined />} />
+          <Button icon={<MoreOutlined />} style={{ fontSize: 16 }} />
         </Dropdown>
       ),
     },
   ];
+
   return (
     <div style={{ padding: "20px", background: "#0c0c1a", minHeight: "100vh" }}>
       <Input
@@ -147,7 +153,12 @@ const RequestList = () => {
       >
         <TabPane
           tab={
-            <span style={{ color: currentTab === "intern" ? "#fff" : "#fff" }}>
+            <span
+              style={{
+                color: currentTab === "intern" ? "blue" : "#fff",
+                fontSize: "28px",
+              }}
+            >
               Intern
             </span>
           }
@@ -156,7 +167,10 @@ const RequestList = () => {
         <TabPane
           tab={
             <span
-              style={{ color: currentTab === "temporary" ? "#fff" : "#fff" }}
+              style={{
+                color: currentTab === "temporary" ? "#946344" : "#fff",
+                fontSize: "28px",
+              }}
             >
               Temporary
             </span>

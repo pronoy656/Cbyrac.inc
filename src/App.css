@@ -3,7 +3,7 @@
 /* Slightly larger table data text for better readability */
 .ant-table-tbody > tr > td,
 .ant-table-thead > tr > th {
-	font-size: 15px;
+	font-size: 18px;
 	color: #ffffff; /* ensure text is white on dark background */
 }
 
@@ -28,4 +28,13 @@
 /* Input prefix icon color override */
 .ant-input-prefix .anticon {
 	color: #b3b3b3;
+}
+
+/* Active underline (ink bar) কাস্টমাইজ */
+.ant-tabs-ink-bar {
+  height: 4px !important;          /* মোটা underline */
+  border-radius: 2px;              /* গোলাকার edges */
+  background-color: #1890ff !important; /* রঙ (তুমি চাইলে বদলাতে পারো) */
+  width: 40% !important;           /* ট্যাবের নিচে লাইনটা ছোট হবে */
+  left: 30% !important;            /* লাইনটা center এ যাবে */
 }
