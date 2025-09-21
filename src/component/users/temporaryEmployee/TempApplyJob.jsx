@@ -346,7 +346,7 @@ const TempApplyJob = () => {
                   <div className={inputWrapperClass}>
                     <input
                       type="text"
-                      value="Intern"
+                      value="Temporary"
                       readOnly
                       className={inputClass}
                     />
@@ -393,7 +393,7 @@ const TempApplyJob = () => {
 
               {/* Previous Application */}
 
-              <div>
+              <div className="mt-4">
                 <label className="text-white mb-1 block">
                   Have You Previously Applied For Employment With This Company?
                 </label>
@@ -409,7 +409,7 @@ const TempApplyJob = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="mt-4">
                 <label className="text-white mb-1 block">
                   If Yes, When and Where Did You Apply
                 </label>
@@ -423,7 +423,7 @@ const TempApplyJob = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="mt-4">
                 <label className="text-white mb-1 block">
                   Have You Ever Been Employed By This Company?
                 </label>
@@ -439,7 +439,7 @@ const TempApplyJob = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="mt-4">
                 <label className="text-white mb-1 block">
                   If Yes, Provide Dates, Location and Reason For Separation
                 </label>

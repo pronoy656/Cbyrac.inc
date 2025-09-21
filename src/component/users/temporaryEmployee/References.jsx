@@ -80,7 +80,10 @@ const References = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">May We Contact</label>
+                <label className="text-white mb-1 block">
+                  Have you ever been terminated or asked to resign from any job?
+                  *
+                </label>
                 <div className={inputWrapperClass}>
                   <select
                     {...register("mayWeContact", {
@@ -114,7 +117,7 @@ const References = ({
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">May We Contact</label>
+                <label className="text-white mb-1 block">Enter Your Name</label>
                 <div className={inputWrapperClass}>
                   <select
                     {...register("mayWeContact", {

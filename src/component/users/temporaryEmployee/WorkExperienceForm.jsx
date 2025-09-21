@@ -89,7 +89,7 @@ const WorkExperienceForm = ({
             {/* Employer 1 Info */}
             <p className="text-[32px] font-bold mt-8 ">Employer 1</p>
             <div className="border-2 w-44 mb-5"></div>
-            <div>
+            <div className="mb-4">
               <label className="text-white mb-1 block">Name*</label>
               <div className={inputWrapperClass}>
                 <input
@@ -100,7 +100,7 @@ const WorkExperienceForm = ({
                 />
               </div>
             </div>
-            <div>
+            <div className="mb-4">
               <label className="text-white mb-1 block">Address *</label>
               <div className={inputWrapperClass}>
                 <input
@@ -251,7 +251,7 @@ const WorkExperienceForm = ({
               </div>
             </div>
             <div>
-              <div>
+              <div className="mb-4">
                 <label className="text-white mb-1 block">
                   What will this employer say was the reason your employment
                   terminated?
@@ -265,7 +265,7 @@ const WorkExperienceForm = ({
                   />
                 </div>
               </div>
-              <div>
+              <div className="mb-4">
                 <label className="text-white mb-1 block">
                   Were you ever disciplined? If so, for what?
                 </label>
@@ -278,7 +278,7 @@ const WorkExperienceForm = ({
                   />
                 </div>
               </div>
-              <div>
+              <div className="mb-4">
                 <label className="text-white mb-1 block">
                   How much notice did you give when resigning? If none, explain.
                 </label>

@@ -431,7 +431,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 const days = ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const Timesheet = () => {
+const TimeSheetTemp = () => {
   const {
     register,
     handleSubmit,
@@ -502,7 +502,7 @@ const Timesheet = () => {
         {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold mb-2">
-            Employee Weekly Time Sheet (For Intern Employee)
+            Employee Weekly Time Sheet (For Temporary Employee)
           </h1>
           <p className="text-lg text-gray-200 mb-7">
             Submit Timesheet to Payroll@Cbyracinc.com
@@ -896,4 +896,4 @@ const Timesheet = () => {
   );
 };
 
-export default Timesheet;
+export default TimeSheetTemp;

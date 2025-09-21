@@ -1,322 +1,3 @@
-// import React, { useState } from "react";
-// import { startOfMonth, endOfMonth, eachDayOfInterval, format } from "date-fns";
-// import { Dialog } from "@headlessui/react";
-
-// const months = Array.from({ length: 12 }, (_, i) => i); // 0-11 months
-
-// const AdminCalender = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(null);
-
-//   const [bgColor, setBgColor] = useState("#A9D08F");
-//   const [redBgColor, setRedBgColor] = useState("#F04D23");
-//   const [textColor, setTextColor] = useState("#919191");
-//   const [type, setType] = useState("Pay Day");
-
-//   const currentYear = 2025;
-
-//   const openModal = (date) => {
-//     setSelectedDate(date);
-//     setIsOpen(true);
-//   };
-//   return (
-//     <div className="p-6 grid grid-cols-3 gap-6">
-//       {months.map((month) => {
-//         const start = startOfMonth(new Date(currentYear, month));
-//         const end = endOfMonth(new Date(currentYear, month));
-//         const days = eachDayOfInterval({ start, end });
-
-//         // For aligning the first day correctly
-//         const paddingDays = start.getDay(); // Sunday=0, Monday=1, ...
-
-//         return (
-//           <div key={month} className="bg-white rounded-xl shadow p-4">
-//             <h2 className="text-center font-bold text-lg mb-2">
-//               {format(start, "MMMM yyyy")}
-//             </h2>
-//             <div className="grid grid-cols-7 text-center font-semibold text-gray-600">
-//               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-//                 <div key={d}>{d}</div>
-//               ))}
-//             </div>
-//             <div className="grid grid-cols-7 text-center">
-//               {Array.from({ length: paddingDays }).map((_, i) => (
-//                 <div key={`pad-${i}`} />
-//               ))}
-//               {days.map((day) => (
-//                 <button
-//                   key={day}
-//                   onClick={() => openModal(day)}
-//                   className="p-2 m-1 rounded hover:bg-gray-200 transition"
-//                 >
-//                   {format(day, "d")}
-//                 </button>
-//               ))}
-//             </div>
-//           </div>
-//         );
-//       })}
-
-//       {/* Modal */}
-//       <Dialog
-//         open={isOpen}
-//         onClose={() => setIsOpen(false)}
-//         className="relative z-50"
-//       >
-//         <div
-//           className="fixed inset-0 bg-black/30 backdrop-blur-sm"
-//           aria-hidden="true"
-//         />
-
-//         <div className="fixed inset-0 flex items-center justify-center p-4">
-//           <Dialog.Panel className="mx-auto max-w-md rounded-2xl bg-white p-6 shadow-lg">
-//             <Dialog.Title className="text-lg font-bold mb-4">
-//               Edit Date: {selectedDate ? format(selectedDate, "PPP") : ""}
-//             </Dialog.Title>
-
-//             {/* Background color picker */}
-//             <div className="mb-3">
-//               <label className="block mb-1 font-medium">Background Color</label>
-//               <input
-//                 type="color"
-//                 value={bgColor}
-//                 onChange={(e) => setBgColor(e.target.value)}
-//                 className="w-16 h-16  rounded-full"
-//               />
-//               <input
-//                 type="color"
-//                 value={redBgColor}
-//                 onChange={(e) => setRedBgColor(e.target.value)}
-//                 className="w-16 h-16  rounded-full"
-//               />
-//             </div>
-
-//             {/* Text color picker */}
-//             <div className="mb-3">
-//               <label className="block mb-1 font-medium">Text Color</label>
-//               <input
-//                 type="color"
-//                 value={textColor}
-//                 onChange={(e) => setTextColor(e.target.value)}
-//                 className="w-16 h-10 border rounded"
-//               />
-//             </div>
-
-//             {/* Dropdown */}
-//             <div className="mb-3">
-//               <label className="block mb-1 font-medium">Type</label>
-//               <select
-//                 value={type}
-//                 onChange={(e) => setType(e.target.value)}
-//                 className="border rounded p-2 w-full"
-//               >
-//                 <option>Pay Day</option>
-//                 <option>Weekending</option>
-//                 <option>Pay Period</option>
-//               </select>
-//             </div>
-
-//             {/* Buttons */}
-//             <div className="flex justify-end gap-2 mt-4">
-//               <button
-//                 onClick={() => setIsOpen(false)}
-//                 className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
-//               >
-//                 Close
-//               </button>
-//               <button
-//                 onClick={() => {
-//                   console.log({
-//                     date: selectedDate,
-//                     bgColor,
-//                     textColor,
-//                     type,
-//                   });
-//                   setIsOpen(false);
-//                 }}
-//                 className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-//               >
-//                 Save
-//               </button>
-//             </div>
-//           </Dialog.Panel>
-//         </div>
-//       </Dialog>
-//     </div>
-//   );
-// };
-
-// export default AdminCalender;
-////////////////////////////////
-// import React, { useState } from "react";
-// import { startOfMonth, endOfMonth, eachDayOfInterval, format } from "date-fns";
-// import { Dialog } from "@headlessui/react";
-
-// const months = Array.from({ length: 12 }, (_, i) => i); // 0-11 months
-
-// const AdminCalender = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(null);
-
-//   const [bgColor, setBgColor] = useState("#A9D08F");
-//   const [redBgColor, setRedBgColor] = useState("#F04D23");
-//   const [textColor, setTextColor] = useState("#919191");
-//   const [type, setType] = useState("Pay Day");
-
-//   // এখানে আমরা সেভ করা তারিখের ডেটা রাখবো
-//   const [dateStyles, setDateStyles] = useState({});
-
-//   const currentYear = 2025;
-
-//   const openModal = (date) => {
-//     setSelectedDate(date);
-//     setIsOpen(true);
-//   };
-
-//   const handleSave = () => {
-//     if (selectedDate) {
-//       const key = format(selectedDate, "yyyy-MM-dd"); // date key
-
-//       setDateStyles((prev) => ({
-//         ...prev,
-//         [key]: { bgColor, textColor, type },
-//       }));
-//     }
-//     setIsOpen(false);
-//   };
-
-//   return (
-//     <div className="p-6 grid grid-cols-3 gap-6">
-//       {months.map((month) => {
-//         const start = startOfMonth(new Date(currentYear, month));
-//         const end = endOfMonth(new Date(currentYear, month));
-//         const days = eachDayOfInterval({ start, end });
-
-//         // For aligning the first day correctly
-//         const paddingDays = start.getDay(); // Sunday=0, Monday=1, ...
-
-//         return (
-//           <div key={month} className="bg-white rounded-xl shadow p-4">
-//             <h2 className="text-center font-bold text-lg mb-2">
-//               {format(start, "MMMM yyyy")}
-//             </h2>
-//             <div className="grid grid-cols-7 text-center font-semibold text-gray-600">
-//               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-//                 <div key={d}>{d}</div>
-//               ))}
-//             </div>
-//             <div className="grid grid-cols-7 text-center">
-//               {Array.from({ length: paddingDays }).map((_, i) => (
-//                 <div key={`pad-${i}`} />
-//               ))}
-//               {days.map((day) => {
-//                 const key = format(day, "yyyy-MM-dd");
-//                 const style = dateStyles[key];
-
-//                 return (
-//                   <button
-//                     key={day}
-//                     onClick={() => openModal(day)}
-//                     className="p-2 m-1 rounded-full transition w-10 h-10 flex items-center justify-center"
-//                     style={{
-//                       backgroundColor: style?.bgColor || "transparent",
-//                       color: style?.textColor || "black",
-//                     }}
-//                   >
-//                     {format(day, "d")}
-//                   </button>
-//                 );
-//               })}
-//             </div>
-//           </div>
-//         );
-//       })}
-
-//       {/* Modal */}
-//       <Dialog
-//         open={isOpen}
-//         onClose={() => setIsOpen(false)}
-//         className="relative z-50"
-//       >
-//         <div
-//           className="fixed inset-0 bg-black/30 backdrop-blur-sm"
-//           aria-hidden="true"
-//         />
-
-//         <div className="fixed inset-0 flex items-center justify-center p-6">
-//           <Dialog.Panel className="mx-auto w-[450px] h-[500px] rounded-2xl bg-white p-8 shadow-lg">
-//             <Dialog.Title className="text-xl font-bold mb-4">
-//               Edit Date: {selectedDate ? format(selectedDate, "PPP") : ""}
-//             </Dialog.Title>
-
-//             {/* Background color picker */}
-//             <div className="mb-6">
-//               <label className="block mb-2 font-medium">Background Color</label>
-//               <div className="flex gap-4">
-//                 <input
-//                   type="color"
-//                   value={bgColor}
-//                   onChange={(e) => setBgColor(e.target.value)}
-//                   className="w-14 h-14 rounded-full cursor-pointer"
-//                 />
-//                 <input
-//                   type="color"
-//                   value={redBgColor}
-//                   onChange={(e) => setRedBgColor(e.target.value)}
-//                   className="w-14 h-14 rounded-full cursor-pointer"
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Text color picker */}
-//             <div className="mb-6">
-//               <label className="block mb-2 font-medium">Text Color</label>
-//               <input
-//                 type="color"
-//                 value={textColor}
-//                 onChange={(e) => setTextColor(e.target.value)}
-//                 className="w-16 h-10 border rounded cursor-pointer"
-//               />
-//             </div>
-
-//             {/* Dropdown */}
-//             <div className="mb-6">
-//               <label className="block mb-2 font-medium">Type</label>
-//               <select
-//                 value={type}
-//                 onChange={(e) => setType(e.target.value)}
-//                 className="border rounded p-2 w-full"
-//               >
-//                 <option>Pay Day</option>
-//                 <option>Weekending</option>
-//                 <option>Pay Period</option>
-//               </select>
-//             </div>
-
-//             {/* Buttons */}
-//             <div className="flex justify-end gap-3 mt-6">
-//               <button
-//                 onClick={() => setIsOpen(false)}
-//                 className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
-//               >
-//                 Close
-//               </button>
-//               <button
-//                 onClick={handleSave}
-//                 className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-//               >
-//                 Save
-//               </button>
-//             </div>
-//           </Dialog.Panel>
-//         </div>
-//       </Dialog>
-//     </div>
-//   );
-// };
-
-// export default AdminCalender;
-
 ///////////////////////
 import React, { useState } from "react";
 import { startOfMonth, endOfMonth, eachDayOfInterval, format } from "date-fns";
@@ -436,6 +117,32 @@ const AdminCalender = () => {
             </div>
           );
         })}
+      </div>
+
+      <div className=" mt-10">
+        <div className="space-y-4">
+          {/* Friday - Pay Day */}
+          <div className="flex items-center space-x-4">
+            <div className="w-20 h-10 bg-green-300"></div>
+            <span className="text-white text-xl font-semibold">
+              Friday - Pay Day
+            </span>
+          </div>
+
+          {/* Every Sunday Is Weekending */}
+          <div className="flex items-center space-x-4">
+            <div className="w-20 h-10 bg-red-500"></div>
+            <span className="text-white text-xl font-semibold">
+              Every Sunday Is Weekending
+            </span>
+          </div>
+
+          {/* Pay Period */}
+          <div className="flex items-center space-x-4">
+            <div className="w-20 h-10 bg-gray-400"></div>
+            <span className="text-white text-xl font-semibold">Pay Period</span>
+          </div>
+        </div>
       </div>
 
       {/* Modal */}

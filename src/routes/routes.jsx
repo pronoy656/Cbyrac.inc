@@ -108,6 +108,8 @@ import AdminMainLayout from "../component/layouts/adminLayout/AdminMainLayout";
 import Overview from "../component/users/admin/Overview";
 import RequestList from "../component/users/admin/RequestList";
 import AdminCalender from "../component/users/admin/adminCalender/AdminCalender";
+import TimeSheetTemp from "../component/users/temporaryEmployee/TimeSheetTemp";
+import PayrollCalender from "../component/users/internEmployee/PayrollCalender";
 
 const router = createBrowserRouter([
   {
@@ -127,6 +129,10 @@ const router = createBrowserRouter([
         element: <TimeSheet />,
       },
       {
+        path: "payroll-calendar",
+        element: <PayrollCalender></PayrollCalender>,
+      },
+      {
         path: "test-input",
         element: <TestInput />,
       },
@@ -139,6 +145,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <TempApplyJob />,
+      },
+      {
+        path: "/temporary-employee/time-sheet-temp",
+        element: <TimeSheetTemp></TimeSheetTemp>,
       },
     ],
   },

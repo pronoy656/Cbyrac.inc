@@ -18,13 +18,13 @@ const TempSidebar = () => {
       key: "time-sheet",
       label: "Time Sheet",
       icon: <Clock className="w-5 h-5" />,
-      path: "/time-sheet",
+      path: "/temporary-employee/time-sheet-temp",
     },
     {
       key: "payroll-calendar",
       label: "Payroll Calendar",
       icon: <Calendar className="w-5 h-5" />,
-      path: "/payroll-calendar",
+      path: "/temporary-employee/payroll-calendar",
     },
   ];
 
