@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
-
-
+/* // date input এর calendar icon এর কালার পরিবর্তন করার জন্য */
+@layer utilities {
+  .date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* icon white হবে */
+    cursor: pointer;
+  }
+}
 
 
 

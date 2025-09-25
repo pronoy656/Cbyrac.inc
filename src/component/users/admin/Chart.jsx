@@ -122,7 +122,7 @@ const Chart = () => {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={data}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                margin={{ top: 5, right: 30, left: 5, bottom: 8 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis

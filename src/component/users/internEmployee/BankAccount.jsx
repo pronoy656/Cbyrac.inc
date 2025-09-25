@@ -4,10 +4,7 @@ import { useForm } from "react-hook-form";
 import ProgressBar from "../../progressBar/ProgressBar";
 import { IoPeopleOutline } from "react-icons/io5";
 import { CiCircleCheck } from "react-icons/ci";
-
-// import React, { useState,  } from "react";
-// import { useForm } from "react-hook-form";
-import { Upload } from "lucide-react";
+import { Eye, Upload, X } from "lucide-react";
 
 // সাধারণ Button কম্পোনেন্ট বানালাম
 const Button = ({ type = "button", className, onClick, children }) => (
@@ -20,57 +17,83 @@ const Button = ({ type = "button", className, onClick, children }) => (
   </button>
 );
 
-const BankAccount = ({ prevStep, nextStep, step }) => {
-  const [selectedAccount, setSelectedAccount] = useState(null); // initially no form
-  // নতুন state
-  const [depositType, setDepositType] = useState(""); // deposit type রাখবে
-  const [selectedPercentage, setSelectedPercentage] = useState(0); // deposit percentage রাখবে
+const BankAccount = ({ prevStep, step, nextStep }) => {
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [depositType, setDepositType] = useState("");
+  const [selectedPercentage, setSelectedPercentage] = useState(0);
+  const [files, setFiles] = useState([]); // uploaded files state
+  const [selectedPDF, setSelectedPDF] = useState(null); // modal pdf state for full view
+  const [preview, setPreview] = useState(null); // For Signature preview
 
-  const totalSteps = 3; // total number of steps for progress bar
+  // File upload state [error: 'isDragOver' is declared but its value is never read.]
+  const [isDragOver, setIsDragOver] = useState(false);
+  // const depositType = watch("depositType");
+
+  const totalSteps = 3;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-
-  // const onSubmit = (data) => {
-  //   console.log("Bank Account Data Submitted:", data);
-  //   alert("Form submitted successfully! Check console.");
-  // };
-
-  const inputWrapperClass =
-    "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
-  const inputClass =
-    "w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0";
-
-  // file upload state and handlers
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  const {
-    // register,
-    // handleSubmit,
     setValue,
-    watch,
-    // formState: { errors },
+    // trigger, // <-- important for step-wise validation
+
+    // watch,
   } = useForm({
     defaultValues: {
       documents: null,
     },
   });
 
-  const watchedFiles = watch("documents");
+  // const onSubmit = (data) => {
+  //   console.log("Form submitted:", data);
+  //   if (data.documents && data.documents.length > 0) {
+  //     const files = Array.from(data.documents);
+  //     // setUploadedFiles(files);
+  //     console.log("Uploaded files:", files);
+  //   }
+  // };
 
-  const onSubmit = (data) => {
-    console.log("Form submitted:", data);
-    if (data.documents && data.documents.length > 0) {
-      const files = Array.from(data.documents);
-      setUploadedFiles(files);
-      console.log("Uploaded files:", files);
-    }
+  //  // Inside your component
+  // const nextStepHandler = async () => {
+  //   // Determine fields to validate based on selected account
+  //   const fieldsToValidate =
+  //     selectedAccount === "checking"
+  //       ? [
+  //           "bankName",
+  //           "state",
+  //           "depositType",
+  //           "transitNo",
+  //           "accountNo",
+  //           "documents",
+  //           "employeeSignature",
+  //           "signDate",
+  //         ]
+  //       : [
+  //           "secondBankName",
+  //           "savingsTransitNo",
+  //           "savingsAccountNo",
+  //           "employeeSignature",
+  //           "signDate",
+  //         ];
+
+  //   // Trigger validation for these fields
+  //   const isValid = await trigger(fieldsToValidate);
+
+  //   if (isValid) {
+  //     setStep((prev) => prev + 1); // Move to next step
+  //   } else {
+  //     console.log("Validation errors:", errors); // Stay on current step
+  //   }
+  // };
+
+  // Next button এর জন্য function
+  const handleNext = (data) => {
+    console.log("Form Data:", data); // সব form data console এ দেখাবে
+    nextStep(); // তারপর পরের step এ যাবে
   };
 
+  // Drag drop handlers
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
     setIsDragOver(true);
@@ -86,22 +109,58 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
       e.preventDefault();
       setIsDragOver(false);
 
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      if (droppedFiles.length > 0) {
+        const updatedFiles = [...files, ...droppedFiles];
+        setFiles(updatedFiles);
+
         const dt = new DataTransfer();
-        Array.from(files).forEach((file) => dt.items.add(file));
+        updatedFiles.forEach((file) => dt.items.add(file));
         setValue("documents", dt.files);
       }
     },
-    [setValue]
+    [files, setValue]
   );
 
   const handleFileSelect = (e) => {
-    const files = e.target.files;
-    if (files) {
-      setValue("documents", files);
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+      const updatedFiles = [...files, ...selectedFiles];
+      setFiles(updatedFiles);
+
+      const dt = new DataTransfer();
+      updatedFiles.forEach((file) => dt.items.add(file));
+      setValue("documents", dt.files);
     }
   };
+
+  // Remove file handler
+  const handleRemoveFile = (index) => {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+
+    const dt = new DataTransfer();
+    updatedFiles.forEach((file) => dt.items.add(file));
+    setValue("documents", dt.files);
+  };
+
+  // Signature preview handler
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  // For removing the selected signature image
+  const handleRemoveImage = () => {
+    setPreview(null);
+  };
+
+  const inputWrapperClass =
+    "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
+  const inputClass =
+    "w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0";
 
   return (
     <div className="text-white">
@@ -126,7 +185,6 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
             Employee Direct Deposit Authorization Agreement
           </h1>
           <p className="text-sm text-gray-300 mb-7">(ACH CREDIT & DEBITS)</p>
-          {/* progressbar */}
           <ProgressBar currentStep={step} totalSteps={totalSteps} />
         </div>
 
@@ -138,398 +196,471 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
           Select Checking & 100%. Saving option only if needed.
         </p>
         <div className="flex justify-center gap-6">
-          <button
-            type="button"
-            className={`w-[293px] h-[158px] text-white bg-gradient-to-r from-[#8C6750] to-[#D4BFB2] rounded-lg transition-all duration-300 hover:bg-[#5d3d2e] ${
-              selectedAccount === "checking"
-                ? "bg-[#9e7c5e] border-3 border-white"
-                : "bg-gradient-to-r from-[#8C6750] to-[#D4BFB2]"
-            }`}
-            onClick={() => setSelectedAccount("checking")}
-          >
-            <div className="flex items-center justify-between text-2xl text-white px-10">
-              <div className="text-3xl">
-                <IoPeopleOutline />
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-6">
+            <button
+              type="button"
+              className={`w-[293px] h-[158px] text-white rounded-lg transition-all duration-300 ${
+                selectedAccount === "checking"
+                  ? "bg-[#9e7c5e] border-3 border-white"
+                  : "bg-gradient-to-r from-[#8C6750] to-[#D4BFB2]"
+              }`}
+              onClick={() => setSelectedAccount("checking")}
+            >
+              <div className="flex items-center justify-between text-2xl text-white px-10">
+                <IoPeopleOutline className="text-3xl" />
+                <CiCircleCheck />
               </div>
-              <CiCircleCheck />
-            </div>
-            <p className="flex justify-start px-10 mt-8 text-2xl font-semibold">
-              Checking Account
-            </p>
-          </button>
+              <p className="flex justify-start px-10 mt-8 text-2xl font-semibold">
+                Checking Account
+              </p>
+            </button>
 
-          <button
-            type="button"
-            className={`w-[293px] h-[158px] text-white bg-gradient-to-r from-[#8C6750] to-[#D4BFB2] rounded-lg transition-all duration-300 hover:bg-[#5d3d2e] ${
-              selectedAccount === "savings"
-                ? "bg-[#9e7c5e] border-3 border-white"
-                : "bg-gradient-to-r from-[#8C6750] to-[#D4BFB2]"
-            }`}
-            onClick={() => setSelectedAccount("savings")}
-          >
-            <div className="flex items-center justify-between text-2xl text-white px-10">
-              <div className="text-3xl">
-                <IoPeopleOutline />
+            <button
+              type="button"
+              className={`w-[293px] h-[158px] text-white rounded-lg transition-all duration-300 ${
+                selectedAccount === "savings"
+                  ? "bg-[#9e7c5e] border-3 border-white"
+                  : "bg-gradient-to-r from-[#8C6750] to-[#D4BFB2]"
+              }`}
+              onClick={() => setSelectedAccount("savings")}
+            >
+              <div className="flex items-center justify-between text-2xl text-white px-10">
+                <IoPeopleOutline className="text-3xl" />
+                <CiCircleCheck />
               </div>
-              <CiCircleCheck />
-            </div>
-            <p className="flex justify-start px-6 mt-8 text-2xl font-semibold">
-              Savings Account
-            </p>
-          </button>
+              <p className="flex justify-start px-6 mt-8 text-2xl font-semibold">
+                Savings Account
+              </p>
+            </button>
+          </div>
         </div>
 
         {/* Conditionally render form */}
         {selectedAccount && (
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            // onSubmit={handleSubmit(onSubmit)}
             className="rounded-2xl max-w-7xl mx-auto mt-10"
           >
             <header className="text-xl text-white font-semibold mt-9">
               {selectedAccount === "checking"
-                ? "Checking Account :"
-                : "Savings Account :"}
+                ? "Checking Account Details"
+                : "Savings Account Details"}
             </header>
-            {/* Form fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 mt-4">
-              <div>
-                <label className="text-white mb-1 block">Bank Name *</label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Enter Bank Name"
-                    {...register("bankName")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
 
-              <div>
-                <label className="text-white mb-1 block">State </label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Enter State"
-                    {...register("state")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* // Deposit Type এবং Deposit Percentage logic here*/}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              {/* Deposit Type */}
-              <div>
-                <label className="text-white mb-1 block">Deposit type *</label>
-                <div className={inputWrapperClass}>
-                  <select
-                    {...register("depositType", {
-                      required: "Please select a deposit type",
-                    })}
-                    value={depositType}
-                    onChange={(e) => setDepositType(e.target.value)}
-                    className={`${inputClass} bg-[#05051A]`}
-                  >
-                    <option value="">Select</option>
-                    <option value="full">Full Pay Check</option>
-                    <option value="partial">Partial Pay Check</option>
-                  </select>
-                </div>
-                {errors.depositType && (
-                  <p className="text-red-500 text-sm">
-                    {errors.depositType.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Deposit Percentage */}
-              <div>
-                <label className="text-white mb-1 block">
-                  Deposit Percentage *
-                </label>
-                <div className={`${inputWrapperClass} relative`}>
-                  {depositType === "full" ? (
-                    <div className="relative">
+            {/* === Checking Account First 6 Fields === */}
+            {selectedAccount === "checking" && (
+              <>
+                {/* First 6 inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 mt-4">
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Bank Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
                       <input
-                        type="number"
-                        value={100}
-                        readOnly
-                        className={`${inputClass} pr-10`}
+                        type="text"
+                        placeholder="Enter Bank Name"
+                        {...register("bankName", {
+                          required: "Bank name is required",
+                        })}
+                        className={inputClass}
                       />
-                      <span className="absolute right-144 top-1/2 -translate-y-1/2 text-gray-200">
-                        %
-                      </span>
                     </div>
-                  ) : depositType === "partial" ? (
-                    <select
-                      value={selectedPercentage}
-                      onChange={(e) =>
-                        setSelectedPercentage(Number(e.target.value))
-                      }
-                      className={`${inputClass} bg-[#05051A]`}
-                    >
-                      {Array.from({ length: 21 }, (_, i) => i * 5).map(
-                        (val) => (
-                          <option key={val} value={val}>
-                            {val}%
-                          </option>
-                        )
-                      )}
-                    </select>
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder="Select deposit type first"
-                      readOnly
-                      className={inputClass}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            {/*Transit/ABA No and Account No */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-white mb-1 block">
-                  {" "}
-                  Transit/ABA No *{" "}
-                </label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Enter Transit/ABA No"
-                    {...register("telephone")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-white mb-1 block">Account No *</label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="email"
-                    placeholder="Enter Account No"
-                    {...register("email")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-            </div>{" "}
-            {/* Second Bank Name and Deposit Amount ( In Percentage ) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-white mb-1 block">
-                  Second Bank Name *
-                </label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Enter Bank Name"
-                    {...register("telephone")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-white mb-1 block">
-                  Deposit Percentage remaining*
-                </label>
-                <div className={`${inputWrapperClass} relative`}>
-                  <input
-                    type="number"
-                    value={
-                      depositType === "full"
-                        ? 0
-                        : depositType === "partial"
-                        ? 100 - selectedPercentage
-                        : ""
-                    }
-                    readOnly
-                    className={`${inputClass} pr-10`}
-                  />
-                  <span className="absolute right-144 top-1/2 -translate-y-1/2 text-gray-200">
-                    %
-                  </span>
-                </div>
-                {errors.percentage && (
-                  <p className="text-red-500 text-sm">
-                    {errors.percentage.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            {/* Transit/ABA No  and  Account No*/}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-white mb-1 block">
-                  Transit/ABA No *
-                </label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Enter Transit/ABA No"
-                    {...register("telephone")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-white mb-1 block">Account No *</label>
-                <div className={inputWrapperClass}>
-                  <input
-                    type="email"
-                    placeholder="Enter Account No"
-                    {...register("email")}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* Upload Employee Form */}
-            {/* Header */}
-            <div className="flex justify-start gap-2 mb-4 mt-6 text-white">
-              <h1 className="text-lg font-medium">
-                Add Documents (Direct Deposit Form / Voided Check ) *
-              </h1>
-            </div>
-            <div className="max-w-7xl mx-auto mb-7">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {/* Upload Area */}
-                <div
-                  className={`relative border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-                    isDragOver
-                      ? "border-[#8D6851] bg-gray-100"
-                      : "border-[#8D6851]"
-                  }`}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                >
-                  {/* Upload Icon */}
-                  <div className="mb-6">
-                    <div className="w-16 h-16 bg-[#201925]  mx-auto rounded-lg flex items-center justify-center">
-                      <Upload className="w-8 h-8 text-[#8D6851]" />
+                    {errors.bankName && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.bankName.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-white mb-1 block">State</label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter State"
+                        {...register("state")}
+                        className={inputClass}
+                      />
                     </div>
+                    {errors.lastName && (
+                      <p className="text-red-500 text-sm">
+                        {errors.lastName.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Deposit Type and Percentage */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Deposit type <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <select
+                        {...register("depositType", {
+                          required: "Please select a deposit type",
+                        })}
+                        value={depositType}
+                        onChange={(e) => setDepositType(e.target.value)}
+                        className={`${inputClass} bg-[#05051A]`}
+                      >
+                        <option value="">Select</option>
+                        <option value="full">Full Pay Check</option>
+                        <option value="partial">Partial Pay Check</option>
+                      </select>
+                    </div>
+
+                    {errors.depositType && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.depositType.message}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Upload Text */}
-                  <h2 className="text-xl font-semibold text-white mb-3">
-                    Upload Documents
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Deposit Percentage <span className="text-red-500">*</span>
+                    </label>
+                    <div className={`${inputWrapperClass} relative`}>
+                      {depositType === "full" ? (
+                        <input
+                          type="number"
+                          value={100}
+                          readOnly
+                          className={`${inputClass} cursor-not-allowed`}
+                        />
+                      ) : depositType === "partial" ? (
+                        <select
+                          {...register("depositPercentage", {
+                            required:
+                              depositType === "partial"
+                                ? "Please select deposit percentage"
+                                : false,
+                          })}
+                          value={selectedPercentage}
+                          onChange={(e) =>
+                            setSelectedPercentage(Number(e.target.value))
+                          }
+                          className={`${inputClass} bg-[#05051A]`}
+                        >
+                          <option value="">Select Percentage</option>
+                          {Array.from({ length: 21 }, (_, i) => i * 5).map(
+                            (val) => (
+                              <option key={val} value={val}>
+                                {val}%
+                              </option>
+                            )
+                          )}
+                        </select>
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="Select deposit type first"
+                          readOnly
+                          className={`${inputClass} cursor-not-allowed`}
+                        />
+                      )}
+                    </div>
+
+                    {errors.depositPercentage && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.depositPercentage.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Transit/ABA and Account No */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Transit/ABA No <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter Transit/ABA No"
+                        {...register("transitNo", {
+                          required: "Transit/ABA No is required",
+                        })}
+                        className={inputClass}
+                      />
+                    </div>
+
+                    {errors.transitNo && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.transitNo.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Account No <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter Account No"
+                        {...register("accountNo", {
+                          required: "Account No is required",
+                        })}
+                        className={inputClass}
+                      />
+                    </div>
+
+                    {errors.accountNo && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.accountNo.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* File Upload Box */}
+                <div className="mb-6">
+                  <h2 className="text-lg font-medium mb-2">
+                    Add Documents (Direct Deposit Form / Voided Check){" "}
+                    <span className="text-red-500">*</span>
                   </h2>
 
-                  <p className="text-gray-400 mb-6">
-                    Drag and drop files here, or browse
-                  </p>
-
-                  {/* Choose File Button */}
-                  <div className="mb-6">
+                  <div
+                    className="relative border-2 border-dashed rounded-lg p-12 text-center transition-colors border-[#8D6851]"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                  >
+                    <Upload className="w-8 h-8 text-[#8D6851] mx-auto mb-4" />
+                    <p className="mb-4">Drag and drop files or browse</p>
                     <Button
                       type="button"
-                      className="bg-[#8D6851] hover:bg-amber-800 text-white px-8 py-2"
+                      className="bg-[#8D6851] hover:bg-amber-800 text-white"
                       onClick={() =>
                         document.getElementById("file-input")?.click()
                       }
                     >
                       Choose File
                     </Button>
+                    <input
+                      id="file-input"
+                      type="file"
+                      multiple
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      className="hidden"
+                      {...register("documents", {
+                        required: "Please select at least one document",
+                      })}
+                      onChange={handleFileSelect}
+                    />
                   </div>
 
-                  {/* File Input */}
-                  <input
-                    id="file-input"
-                    type="file"
-                    multiple
-                    accept=".jpg,.jpeg,.png,.pdf"
-                    className="hidden"
-                    {...register("documents", {
-                      required: "Please select at least one document",
-                    })}
-                    onChange={handleFileSelect}
-                  />
+                  {/* File Preview Section */}
+                  {files.length > 0 && (
+                    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {files.map((file, index) => {
+                        const fileURL = URL.createObjectURL(file);
+                        const isImage = file.type.startsWith("image/");
+                        const isPDF = file.type === "application/pdf";
 
-                  {/* Support Text */}
-                  <p className="text-sm text-gray-400">
-                    Supports JPG, PNG, PDF up to 10MB
-                  </p>
+                        return (
+                          <div
+                            key={index}
+                            className="relative border rounded-md p-2 bg-white shadow-md"
+                          >
+                            {/* Cross Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveFile(index)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                            >
+                              <X size={14} />
+                            </button>
+
+                            {/* Image Preview */}
+                            {isImage && (
+                              <img
+                                src={fileURL}
+                                alt={file.name}
+                                className="w-full h-32 object-contain rounded-md"
+                              />
+                            )}
+                            {/* PDF Preview */}
+                            {isPDF && (
+                              <div
+                                className="w-full h-32 border rounded-md relative cursor-pointer hover:bg-gray-50"
+                                onClick={() => setSelectedPDF(fileURL)}
+                              >
+                                <iframe
+                                  src={fileURL}
+                                  title={file.name}
+                                  className="w-full h-full transform scale-90 origin-top-left"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                                  <p className="text-black text-xl font-semibold flex items-center gap-3 bg-gray-300 p-3 rounded-md">
+                                    <Eye size={22} /> View PDF
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* File Name */}
+                            <p className="text-xs mt-2 truncate">{file.name}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {errors.documents && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.documents.message}
+                    </p>
+                  )}
                 </div>
+              </>
+            )}
 
-                {/* Error Message */}
-                {errors.documents && (
-                  <p className="text-red-500 text-sm mt-2">
-                    {errors.documents.message}
-                  </p>
-                )}
+            {/* === Savings Account Last 4 Fields === */}
+            {selectedAccount === "savings" && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 mt-4">
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Second Bank Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter Bank Name"
+                        {...register("secondBankName", {
+                          required: "Second Bank Name is required",
+                        })}
+                        className={inputClass}
+                      />
+                    </div>
 
-                {/* Selected Files Display */}
-                {watchedFiles && watchedFiles.length > 0 && (
-                  <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                    <h3 className="font-medium text-gray-900 mb-2">
-                      Selected Files:
-                    </h3>
-                    <ul className="space-y-1">
-                      {Array.from(watchedFiles).map((file, index) => (
-                        <li
-                          key={index}
-                          className="text-sm text-gray-600 flex justify-between"
-                        >
-                          <span>{file.name}</span>
-                          <span>{(file.size / 1024 / 1024).toFixed(2)} MB</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {errors.secondBankName && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.secondBankName.message}
+                      </p>
+                    )}
                   </div>
-                )}
 
-                {/* Submit Button */}
-                {/* <div className="mt-6">
-                  <Button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    Upload Documents
-                  </Button>
-                </div> */}
-              </form>
-
-              {/* Uploaded Files Display */}
-              {uploadedFiles.length > 0 && (
-                <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                  <h3 className="font-medium text-green-600 mb-2">
-                    Successfully Uploaded:
-                  </h3>
-                  <ul className="space-y-1">
-                    {uploadedFiles.map((file, index) => (
-                      <li key={index} className="text-sm text-green-700">
-                        {file.name} - {(file.size / 1024 / 1024).toFixed(2)} MB
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Deposit Percentage remaining{" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="number"
+                        value={
+                          depositType === "full"
+                            ? 0
+                            : depositType === "partial"
+                            ? 100 - selectedPercentage
+                            : ""
+                        }
+                        readOnly
+                        className={`${inputClass} cursor-not-allowed`}
+                      />
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-            {/* Employee Signature and date */}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Transit/ABA No <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter Transit/ABA No"
+                        {...register("savingsTransitNo", {
+                          required: "Transit/ABA No is required",
+                        })}
+                        className={inputClass}
+                      />
+                    </div>
+                    {errors.savingsTransitNo && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.savingsTransitNo.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="text-white mb-1 block">
+                      Account No <span className="text-red-500">*</span>
+                    </label>
+                    <div className={inputWrapperClass}>
+                      <input
+                        type="text"
+                        placeholder="Enter Account No"
+                        {...register("savingsAccountNo", {
+                          required: "Account No is required",
+                        })}
+                        className={inputClass}
+                      />
+                    </div>
+                    {errors.savingsAccountNo && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.savingsAccountNo.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Signature and Date */}
             <div className="grid grid-cols-1 sm:grid-cols-3 mb-4">
               <div className="mb-6">
-                <label className="text-white block mb-2">
-                  Employee Signature *
+                <label className="text-white block mb-3">
+                  Upload Employee Signature{" "}
+                  <span className="text-red-500">*</span>{" "}
                 </label>
-                <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851] rounded-md mt-1 flex items-center justify-center">
-                  <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
-                    <span className="text-center">Upload Signature</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      {...register("employeeSignature", {
-                        required: "Signature is required",
-                      })}
-                      className="hidden"
+
+                {/* Upload Button Hide যদি preview থাকে */}
+                {!preview && (
+                  <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851] rounded-md mt-1 flex items-center justify-center">
+                    <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
+                      <span className="text-center">Upload Signature</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        {...register("employeeSignature", {
+                          required: "Signature is required",
+                          onChange: handleFileChange,
+                        })}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {/* Image Preview with Cross */}
+                {preview && (
+                  <div className="mt-3 relative inline-block">
+                    <img
+                      src={preview}
+                      alt="Signature Preview"
+                      className="w-[200px] h-[80px] object-contain border rounded-md"
                     />
-                  </label>
-                </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                )}
+
                 {errors.employeeSignature && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-500 text-sm mt-2">
                     {errors.employeeSignature.message}
                   </p>
                 )}
@@ -545,17 +676,39 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
                     className={`${inputClass} py-3.5`}
                   />
                 </div>
+
                 {errors.signDate && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-500 text-sm mt-1">
                     {errors.signDate.message}
                   </p>
                 )}
               </div>
             </div>
-            <button type="submit" className="px-6 py-2 bg-green-600 rounded">
+
+            {/* <button type="submit" className="px-6 py-2 bg-green-600 rounded">
               Submit
-            </button>
+            </button> */}
           </form>
+        )}
+
+        {/* PDF Full View Modal */}
+        {selectedPDF && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white w-11/12 h-5/6 rounded-lg shadow-lg relative">
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedPDF(null)}
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+              >
+                <X size={18} />
+              </button>
+              <iframe
+                src={selectedPDF}
+                title="Full PDF"
+                className="w-full h-full rounded-lg"
+              ></iframe>
+            </div>
+          </div>
         )}
 
         {/* Navigation */}
@@ -567,10 +720,10 @@ const BankAccount = ({ prevStep, nextStep, step }) => {
           >
             Previous
           </button>
-
           <button
             type="button"
-            onClick={nextStep}
+            onClick={handleSubmit(handleNext)}
+            // onClick={nextStepHandler} // <-- use this handler
             className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
           >
             Next
