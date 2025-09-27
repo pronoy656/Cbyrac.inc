@@ -57,10 +57,12 @@ const W4Form = ({ prevStep, nextStep, step }) => {
             onSubmit={handleSubmit(onSubmit)}
             className="rounded-2xl  max-w-7xl mx-auto"
           >
-            {/* Additional General Info */}
+            {/* Step 1 Info */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Name *</label>
+                <label className="text-white mb-1 block">
+                  Bank Name <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
@@ -72,7 +74,9 @@ const W4Form = ({ prevStep, nextStep, step }) => {
               </div>
 
               <div>
-                <label className="text-white mb-1 block">SSN * (Last 4)</label>
+                <label className="text-white mb-1 block">
+                  SSN (Last 4) <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="email"
@@ -83,7 +87,9 @@ const W4Form = ({ prevStep, nextStep, step }) => {
                 </div>
               </div>
               <div>
-                <label className="text-white mb-1 block">SSN * (Last 4)</label>
+                <label className="text-white mb-1 block">
+                  SSN (Last 4) <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="email"
@@ -94,10 +100,10 @@ const W4Form = ({ prevStep, nextStep, step }) => {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="space-y-4">
               <div>
                 <label className="text-white mb-1 block">
-                  Social Security Number *
+                  Social Security Number <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
@@ -109,7 +115,9 @@ const W4Form = ({ prevStep, nextStep, step }) => {
                 </div>
               </div>
               <div>
-                <label className="text-white mb-1 block">Address *</label>
+                <label className="text-white mb-1 block">
+                  Address <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
@@ -121,15 +129,19 @@ const W4Form = ({ prevStep, nextStep, step }) => {
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Marital Status *
+                  Marital Status <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
-                  <input
-                    type="text"
-                    placeholder="Select Your Marital Status"
-                    {...register("telephone")}
+                  <select
+                    {...register("maritalStatus", { required: true })}
                     className={inputClass}
-                  />
+                    defaultValue=""
+                  >
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -182,7 +194,9 @@ const W4Form = ({ prevStep, nextStep, step }) => {
             </li>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 mt-2">
               <div>
-                <label className="text-white mb-1 block">Bank Name *</label>
+                <label className="text-white mb-1 block">
+                  How Many Children <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"

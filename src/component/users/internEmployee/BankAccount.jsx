@@ -36,7 +36,6 @@ const BankAccount = ({ prevStep, step, nextStep }) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    // trigger, // <-- important for step-wise validation
 
     // watch,
   } = useForm({
@@ -44,48 +43,6 @@ const BankAccount = ({ prevStep, step, nextStep }) => {
       documents: null,
     },
   });
-
-  // const onSubmit = (data) => {
-  //   console.log("Form submitted:", data);
-  //   if (data.documents && data.documents.length > 0) {
-  //     const files = Array.from(data.documents);
-  //     // setUploadedFiles(files);
-  //     console.log("Uploaded files:", files);
-  //   }
-  // };
-
-  //  // Inside your component
-  // const nextStepHandler = async () => {
-  //   // Determine fields to validate based on selected account
-  //   const fieldsToValidate =
-  //     selectedAccount === "checking"
-  //       ? [
-  //           "bankName",
-  //           "state",
-  //           "depositType",
-  //           "transitNo",
-  //           "accountNo",
-  //           "documents",
-  //           "employeeSignature",
-  //           "signDate",
-  //         ]
-  //       : [
-  //           "secondBankName",
-  //           "savingsTransitNo",
-  //           "savingsAccountNo",
-  //           "employeeSignature",
-  //           "signDate",
-  //         ];
-
-  //   // Trigger validation for these fields
-  //   const isValid = await trigger(fieldsToValidate);
-
-  //   if (isValid) {
-  //     setStep((prev) => prev + 1); // Move to next step
-  //   } else {
-  //     console.log("Validation errors:", errors); // Stay on current step
-  //   }
-  // };
 
   // Next button এর জন্য function
   const handleNext = (data) => {
@@ -684,10 +641,6 @@ const BankAccount = ({ prevStep, step, nextStep }) => {
                 )}
               </div>
             </div>
-
-            {/* <button type="submit" className="px-6 py-2 bg-green-600 rounded">
-              Submit
-            </button> */}
           </form>
         )}
 
@@ -723,7 +676,6 @@ const BankAccount = ({ prevStep, step, nextStep }) => {
           <button
             type="button"
             onClick={handleSubmit(handleNext)}
-            // onClick={nextStepHandler} // <-- use this handler
             className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
           >
             Next
