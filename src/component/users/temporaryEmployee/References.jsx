@@ -2,28 +2,46 @@
 import ProgressBar from "../../progressBar/ProgressBar";
 import { IoPeopleOutline } from "react-icons/io5";
 import { CiCircleCheck } from "react-icons/ci";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const References = ({
-  prevStep,
-  nextStep,
-  step,
-  register,
-  handleSubmit,
-  errors,
-  onSubmit,
-}) => {
-  const totalSteps = 8; // total number of steps for progress bar
+const References = ({ prevStep, nextStep }) => {
+  const [step, setStep] = useState(1);
+  const totalSteps = 12; // total number of steps for progress bar
 
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    trigger, // <-- important for step-wise validation
+  } = useForm();
 
   //   const onSubmit = (data) => {
   //     console.log("Bank Account Data Submitted:", data);
   //     alert("Form submitted successfully! Check console.");
   //   };
+
+  const onSubmit = (data) => {
+    console.log("Form Data Submitted:", data);
+    alert("Temp employee Form submitted successfully!");
+  };
+
+  // Step-wise Next button validation
+  const nextStepHandler = async () => {
+    // Trigger validation for all fields
+    const result = await trigger();
+    if (result) {
+      const allData = getValues(); // ✅ এখন ব্যবহার হচ্ছে
+      console.log("Submit temp apply form :", allData);
+      nextStep(); // Next Step
+
+      setStep((prev) => prev + 1);
+    } else {
+      // Errors exist, stay on current step
+      console.log("Validation errors:", errors);
+    }
+  };
 
   const inputWrapperClass =
     "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
@@ -62,27 +80,11 @@ const References = ({
             onSubmit={handleSubmit(onSubmit)}
             className="rounded-2xl  max-w-7xl mx-auto"
           >
-            {/* Step 2 Info */}
-            <div>
-              {/* <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  value="US Citizen"
-                  {...register("citizenship", {
-                    required: "You must select at least one option",
-                  })}
-                  className="w-5 h-5"
-                />
-                Agree With Above Conditions
-              </label> */}
-            </div>
-            {/* Additional General Info */}
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="text-white mb-1 block">
-                  Have you ever been terminated or asked to resign from any job?
-                  *
+                  Have you ever been terminated or asked to resign from any job?{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <select
@@ -104,7 +106,9 @@ const References = ({
               </div>
 
               <div>
-                <label className="text-white mb-1 block">Duties *</label>
+                <label className="text-white mb-1 block">
+                  If Yes how many times? <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="email"
@@ -113,11 +117,19 @@ const References = ({
                     className={inputClass}
                   />
                 </div>
+                {errors.mayWeContact && (
+                  <p className="text-red-500 text-sm">
+                    {errors.mayWeContact.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Enter Your Name</label>
+                <label className="text-white mb-1 block">
+                  Has your employment ever been terminated by mutual agreement?{" "}
+                  <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <select
                     {...register("mayWeContact", {
@@ -138,7 +150,7 @@ const References = ({
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Supervisor’s Name *
+                  If Yes how many times? <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
@@ -148,11 +160,19 @@ const References = ({
                     className={inputClass}
                   />
                 </div>
+                {errors.mayWeContact && (
+                  <p className="text-red-500 text-sm">
+                    {errors.mayWeContact.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">May We Contact</label>
+                <label className="text-white mb-1 block">
+                  Have you ever been given the choice to resign rather than be
+                  terminated? <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <select
                     {...register("mayWeContact", {
@@ -173,7 +193,7 @@ const References = ({
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Supervisor’s Name *
+                  If Yes how many times? <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
@@ -183,13 +203,19 @@ const References = ({
                     className={inputClass}
                   />
                 </div>
+                {errors.mayWeContact && (
+                  <p className="text-red-500 text-sm">
+                    {errors.mayWeContact.message}
+                  </p>
+                )}
               </div>
             </div>
 
             <div>
               <div>
-                <label className="text-white mb-1 block">
-                  How much notice did you give when resigning? If none, explain.
+                <label className="text-white mb-2 block">
+                  How much notice did you give when resigning? If none, explain.{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
@@ -199,13 +225,18 @@ const References = ({
                     className={inputClass}
                   />
                 </div>
+                {errors.mayWeContact && (
+                  <p className="text-red-500 text-sm">
+                    {errors.mayWeContact.message}
+                  </p>
+                )}
               </div>
             </div>
 
             <table className="min-w-full border border-[#8D6851] text-white rounded-lg mt-9">
               <thead>
                 <tr className="bg-slate-900 text-left">
-                  <th className="border border-[#8D6851] px-4 py-2 font-normal text-sm">
+                  <th className="border border-[#8D6851] px-2 py-2 font-normal text-sm">
                     NAME
                   </th>
                   <th className="border border-[#8D6851] px-4 py-2 font-normal text-sm">
@@ -231,62 +262,72 @@ const References = ({
                   </th>
                 </tr>
               </thead>
+
               <tbody>
-                {/* Row 1 */}
-                <tr>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                </tr>
-                {/* Row 2 */}
-                <tr>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                </tr>
-                {/* Row 3 */}
-                <tr>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                </tr>
-                {/* Row 4 */}
-                <tr>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                  <td className="border border-[#8D6851] px-4 py-6"></td>
-                </tr>
+                {[0, 1, 2, 3].map((index) => (
+                  <tr key={index}>
+                    <td className="border border-[#8D6851] px-4 py-4">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.name`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.position`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.company`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.telephone`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.occupation`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.bestTimeToCall`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.workRelationship`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                    <td className="border border-[#8D6851] px-4 py-2">
+                      <input
+                        type="text"
+                        {...register(`references.${index}.yearsKnown`)}
+                        className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-
-            <button
-              type="submit"
-              className="mt-9 px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
-            >
-              Submit
-            </button>
           </form>
-          <div className="flex justify-center mt-6 gap-4">
+          <div className="flex justify-center mt-12 gap-4">
             <button
               type="button"
               onClick={prevStep}
@@ -297,7 +338,7 @@ const References = ({
 
             <button
               type="button"
-              onClick={nextStep}
+              onClick={nextStepHandler}
               className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
             >
               Next

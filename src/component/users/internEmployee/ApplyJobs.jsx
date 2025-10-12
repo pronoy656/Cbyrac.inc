@@ -17,6 +17,7 @@ const ApplyJobs = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
     trigger, // <-- important for step-wise validation
   } = useForm();
 
@@ -30,6 +31,9 @@ const ApplyJobs = () => {
     // Trigger validation for all fields
     const result = await trigger();
     if (result) {
+      const allData = getValues(); // ✅ এখন ব্যবহার হচ্ছে
+      console.log("All form data so far:", allData); // 👈 Console-এ দেখাবে
+
       setStep((prev) => prev + 1);
     } else {
       // Errors exist, stay on current step
@@ -637,7 +641,6 @@ const ApplyJobs = () => {
                   </p>
                 )}
               </div>
-              {/* <button>submit</button> */}
             </form>
 
             <div className="flex justify-center mt-6 gap-4">
@@ -652,6 +655,7 @@ const ApplyJobs = () => {
 
               <button
                 type="button"
+                // onSubmit={onSubmit}
                 onClick={nextStepHandler}
                 className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
               >

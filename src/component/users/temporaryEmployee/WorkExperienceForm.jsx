@@ -2,27 +2,40 @@
 import ProgressBar from "../../progressBar/ProgressBar";
 import { IoPeopleOutline } from "react-icons/io5";
 import { CiCircleCheck } from "react-icons/ci";
-const WorkExperienceForm = ({
-  prevStep,
-  nextStep,
-  step,
-  register,
-  errors,
-  handleSubmit,
-  onSubmit,
-}) => {
-  const totalSteps = 8; // total number of steps for progress bar
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+const WorkExperienceForm = ({ prevStep, nextStep }) => {
+  const [step, setStep] = useState(1);
+  const totalSteps = 12; // total number of steps for progress bar
 
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    trigger, // <-- important for step-wise validation
+  } = useForm();
 
-  //   const onSubmit = (data) => {
-  //     console.log("Bank Account Data Submitted:", data);
-  //     alert("Form submitted successfully! Check console.");
-  //   };
+  const onSubmit = (data) => {
+    console.log("Form Data Submitted:", data);
+    alert("Temp employee Form submitted successfully!");
+  };
+
+  // Step-wise Next button validation
+  const nextStepHandler = async () => {
+    // Trigger validation for all fields
+    const result = await trigger();
+    if (result) {
+      const allData = getValues(); // ✅ এখন ব্যবহার হচ্ছে
+      console.log("Submit temp apply form :", allData);
+      nextStep(); // Next Step
+
+      setStep((prev) => prev + 1);
+    } else {
+      // Errors exist, stay on current step
+      console.log("Validation errors:", errors);
+    }
+  };
 
   const inputWrapperClass =
     "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
@@ -90,112 +103,178 @@ const WorkExperienceForm = ({
             <p className="text-[32px] font-bold mt-8 ">Employer 1</p>
             <div className="border-2 w-44 mb-5"></div>
             <div className="mb-4">
-              <label className="text-white mb-1 block">Name*</label>
+              <label className="text-white mb-1 block">
+                Name <span className="text-red-500">*</span>
+              </label>
               <div className={inputWrapperClass}>
                 <input
                   type="text"
-                  placeholder="Enter Social Security Number *"
-                  {...register("telephone")}
+                  placeholder="Enter Employer Name *"
+                  {...register("employer1_name", {
+                    required: "Employer 1 name is required",
+                  })}
                   className={inputClass}
                 />
               </div>
+              {errors.employer1_name && (
+                <p className="text-red-500 text-sm">
+                  {errors.employer1_name.message}
+                </p>
+              )}
             </div>
             <div className="mb-4">
-              <label className="text-white mb-1 block">Address *</label>
+              <label className="text-white mb-1 block">
+                Address <span className="text-red-500">*</span>
+              </label>
               <div className={inputWrapperClass}>
                 <input
                   type="text"
                   placeholder="City Or Town ,State, ZIP"
-                  {...register("telephone")}
+                  {...register("employer1_address", {
+                    required: "Employer 1 address is required",
+                  })}
                   className={inputClass}
                 />
               </div>
+              {errors.employer1_address && (
+                <p className="text-red-500 text-sm">
+                  {errors.employer1_address.message}
+                </p>
+              )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Telephone *</label>
+                <label className="text-white mb-1 block">
+                  Telephone <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Telephone Number"
-                    {...register("telephone")}
+                    {...register("employer1_telephone", {
+                      required: "Employer 1 telephone is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_telephone && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_telephone.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="text-white mb-1 block">
-                  Date Employed From *
+                  Date Employed From <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    {...register("employer1_dateFrom", {
+                      required: "Start date is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_dateFrom && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_dateFrom.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Date Employed To *{" "}
+                  Date Employed To <span className="text-red-500">*</span>{" "}
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    {...register("employer1_dateTo", {
+                      required: "End date is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_dateTo && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_dateTo.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Job Title*</label>
+                <label className="text-white mb-1 block">
+                  Job Title <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Job Title"
-                    {...register("telephone")}
+                    {...register("employer1_jobTitle", {
+                      required: "Job title is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_jobTitle && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_jobTitle.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="text-white mb-1 block">Duties *</label>
+                <label className="text-white mb-1 block">
+                  Duties <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="Enter Duty Name"
-                    {...register("email")}
+                    {...register("employer1_duties", {
+                      required: "Duties are required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_duties && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_duties.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="text-white mb-1 block">
-                  Supervisor’s Name *
+                  Supervisor’s Name <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
-                    placeholder="Enter Job Title"
-                    {...register("telephone")}
+                    placeholder="Enter Supervisor's Name"
+                    {...register("employer1_supervisor", {
+                      required: "Supervisor name is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_supervisor && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_supervisor.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="text-white mb-1 block">May We Contact</label>
                 <div className={inputWrapperClass}>
                   <select
-                    {...register("mayWeContact", {
+                    {...register("employer1_mayWeContact", {
                       required: "This field is required",
                     })}
                     className={inputClass}
@@ -205,36 +284,54 @@ const WorkExperienceForm = ({
                     <option value="no">No</option>
                   </select>
                 </div>
-                {errors.mayWeContact && (
+                {errors.employer1_mayWeContact && (
                   <p className="text-red-500 text-sm">
-                    {errors.mayWeContact.message}
+                    {errors.employer1_mayWeContact.message}
                   </p>
                 )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Wages Start *</label>
+                <label className="text-white mb-1 block">
+                  Wages Start <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Wages Start"
-                    {...register("telephone")}
+                    {...register("employer1_wagesStart", {
+                      required: "Wages start is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_wagesStart && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_wagesStart.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="text-white mb-1 block">Final*</label>
+                <label className="text-white mb-1 block">
+                  Final <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="Enter "
-                    {...register("email")}
+                    {...register("employer1_final", {
+                      required: "Final wage is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer1_final && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer1_final.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="text-white mb-1 block">
@@ -242,9 +339,9 @@ const WorkExperienceForm = ({
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
-                    placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    type="text"
+                    placeholder="Reason for leaving"
+                    {...register("employer1_reasonLeaving")}
                     className={inputClass}
                   />
                 </div>
@@ -260,7 +357,7 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer1_terminationReason")}
                     className={inputClass}
                   />
                 </div>
@@ -273,7 +370,7 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer1_disciplinary")}
                     className={inputClass}
                   />
                 </div>
@@ -286,7 +383,7 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer1_noticeGiven")}
                     className={inputClass}
                   />
                 </div>
@@ -296,112 +393,178 @@ const WorkExperienceForm = ({
             <p className="text-[32px] font-bold mt-8 ">Employer 2</p>
             <div className="border-2 w-44 mb-5"></div>
             <div>
-              <label className="text-white mb-1 block">Name*</label>
+              <label className="text-white mb-1 block">
+                Name <span className="text-red-500">*</span>
+              </label>
               <div className={inputWrapperClass}>
                 <input
                   type="text"
-                  placeholder="Enter Social Security Number *"
-                  {...register("telephone")}
+                  placeholder="Enter Employer Name *"
+                  {...register("employer2_name", {
+                    required: "Employer 2 name is required",
+                  })}
                   className={inputClass}
                 />
               </div>
+              {errors.employer2_name && (
+                <p className="text-red-500 text-sm">
+                  {errors.employer2_name.message}
+                </p>
+              )}
             </div>
             <div>
-              <label className="text-white mb-1 block">Address *</label>
+              <label className="text-white mb-1 block">
+                Address <span className="text-red-500">*</span>
+              </label>
               <div className={inputWrapperClass}>
                 <input
                   type="text"
                   placeholder="City Or Town ,State, ZIP"
-                  {...register("telephone")}
+                  {...register("employer2_address", {
+                    required: "Employer 2 address is required",
+                  })}
                   className={inputClass}
                 />
               </div>
+              {errors.employer2_address && (
+                <p className="text-red-500 text-sm">
+                  {errors.employer2_address.message}
+                </p>
+              )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Telephone *</label>
+                <label className="text-white mb-1 block">
+                  Telephone <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Telephone Number"
-                    {...register("telephone")}
+                    {...register("employer2_telephone", {
+                      required: "Employer 2 telephone is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_telephone && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_telephone.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="text-white mb-1 block">
-                  Date Employed From *
+                  Date Employed From <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    {...register("employer2_dateFrom", {
+                      required: "Start date is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_dateFrom && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_dateFrom.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="text-white mb-1 block">
-                  Date Employed To *{" "}
+                  Date Employed To <span className="text-red-500">*</span>{" "}
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    {...register("employer2_dateTo", {
+                      required: "End date is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_dateTo && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_dateTo.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Job Title*</label>
+                <label className="text-white mb-1 block">
+                  Job Title <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Job Title"
-                    {...register("telephone")}
+                    {...register("employer2_jobTitle", {
+                      required: "Job title is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_jobTitle && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_jobTitle.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="text-white mb-1 block">Duties *</label>
+                <label className="text-white mb-1 block">
+                  Duties <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="Enter Duty Name"
-                    {...register("email")}
+                    {...register("employer2_duties", {
+                      required: "Duties are required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_duties && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_duties.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="text-white mb-1 block">
-                  Supervisor’s Name *
+                  Supervisor’s Name <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
-                    placeholder="Enter Job Title"
-                    {...register("telephone")}
+                    placeholder="Enter Supervisor's Name"
+                    {...register("employer2_supervisor", {
+                      required: "Supervisor name is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_supervisor && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_supervisor.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="text-white mb-1 block">May We Contact</label>
                 <div className={inputWrapperClass}>
                   <select
-                    {...register("mayWeContact", {
+                    {...register("employer2_mayWeContact", {
                       required: "This field is required",
                     })}
                     className={inputClass}
@@ -411,36 +574,54 @@ const WorkExperienceForm = ({
                     <option value="no">No</option>
                   </select>
                 </div>
-                {errors.mayWeContact && (
+                {errors.employer2_mayWeContact && (
                   <p className="text-red-500 text-sm">
-                    {errors.mayWeContact.message}
+                    {errors.employer2_mayWeContact.message}
                   </p>
                 )}
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">Wages Start *</label>
+                <label className="text-white mb-1 block">
+                  Wages Start <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Enter Wages Start"
-                    {...register("telephone")}
+                    {...register("employer2_wagesStart", {
+                      required: "Wages start is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_wagesStart && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_wagesStart.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="text-white mb-1 block">Final*</label>
+                <label className="text-white mb-1 block">
+                  Final <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
+                    type="text"
                     placeholder="Enter "
-                    {...register("email")}
+                    {...register("employer2_final", {
+                      required: "Final wage is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.employer2_final && (
+                  <p className="text-red-500 text-sm">
+                    {errors.employer2_final.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="text-white mb-1 block">
@@ -448,9 +629,9 @@ const WorkExperienceForm = ({
                 </label>
                 <div className={inputWrapperClass}>
                   <input
-                    type="email"
-                    placeholder="MM-DD-YYYY"
-                    {...register("email")}
+                    type="text"
+                    placeholder="Reason for leaving"
+                    {...register("employer2_reasonLeaving")}
                     className={inputClass}
                   />
                 </div>
@@ -466,7 +647,7 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer2_terminationReason")}
                     className={inputClass}
                   />
                 </div>
@@ -479,7 +660,7 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer2_disciplinary")}
                     className={inputClass}
                   />
                 </div>
@@ -492,20 +673,14 @@ const WorkExperienceForm = ({
                   <input
                     type="text"
                     placeholder="Enter Your Answer "
-                    {...register("telephone")}
+                    {...register("employer2_noticeGiven")}
                     className={inputClass}
                   />
                 </div>
               </div>
             </div>
-            <button
-              type="submit"
-              className="mt-9 px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
-            >
-              Submit
-            </button>
           </form>
-          <div className="flex justify-center mt-6 gap-4">
+          <div className="flex justify-center mt-12 gap-4">
             <button
               type="button"
               onClick={prevStep}
@@ -516,7 +691,8 @@ const WorkExperienceForm = ({
 
             <button
               type="button"
-              onClick={nextStep}
+              // onClick={nextStep}
+              onClick={nextStepHandler}
               className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
             >
               Next

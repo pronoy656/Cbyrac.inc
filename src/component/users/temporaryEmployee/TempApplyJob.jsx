@@ -16,10 +16,12 @@ import TempBankAccount from "./TempBankAccount";
 import TempI9Form from "./TempI9Form";
 import TempW4Form from "./TempW4Form";
 import TempSelectCitizenShip from "./TempSelectCitizenShip";
+import { X } from "lucide-react";
 
 const TempApplyJob = () => {
   const [step, setStep] = useState(1); // track current step
-  const totalSteps = 8; // total number of steps for progress bar
+  const [preview, setPreview] = useState(null); // For Signature preview
+  const totalSteps = 12; // total number of steps for progress bar
 
   //previous and next button logic
   const nextStep = () => setStep((prev) => prev + 1);
@@ -29,12 +31,42 @@ const TempApplyJob = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
+    trigger, // <-- important for step-wise validation
   } = useForm();
 
   const onSubmit = (data) => {
     console.log("Form Data Submitted:", data);
-    alert("Form submitted successfully! Check console.");
+    alert("Temp employee Form submitted successfully!");
   };
+
+  // Step-wise Next button validation
+  const nextStepHandler = async () => {
+    // Trigger validation for all fields
+    const result = await trigger();
+    if (result) {
+      const allData = getValues(); // ✅ এখন ব্যবহার হচ্ছে
+      console.log("Submit temp apply form :", allData); // 👈 Console-এ দেখাবে
+
+      setStep((prev) => prev + 1);
+    } else {
+      // Errors exist, stay on current step
+      console.log("Validation errors:", errors);
+    }
+  };
+
+  // Signature preview handler
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+  // For removing the selected image
+  const handleRemoveImage = () => {
+    setPreview(null);
+  };
+
   const inputWrapperClass =
     "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
   const inputClass =
@@ -80,7 +112,9 @@ const TempApplyJob = () => {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="text-white mb-1 block">First Name</label>
+                  <label className="text-white mb-1 block">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="text"
@@ -111,7 +145,9 @@ const TempApplyJob = () => {
                 </div>
 
                 <div>
-                  <label className="text-white mb-1 block">Last Name</label>
+                  <label className="text-white mb-1 block">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="text"
@@ -133,7 +169,11 @@ const TempApplyJob = () => {
               {/* SSN, DOB, Application Date */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="text-white mb-1 block">SSN</label>
+                  <label className="text-white mb-1 block">
+                    {" "}
+                    Social Security Number (SSN){" "}
+                    <span className="text-red-500">*</span>
+                  </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="text"
@@ -148,7 +188,9 @@ const TempApplyJob = () => {
                 </div>
 
                 <div>
-                  <label className="text-white mb-1 block">Date of Birth</label>
+                  <label className="text-white mb-1 block">
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="date"
@@ -165,7 +207,7 @@ const TempApplyJob = () => {
 
                 <div>
                   <label className="text-white mb-1 block">
-                    Application Date
+                    Application Date <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <input
@@ -188,42 +230,61 @@ const TempApplyJob = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="text-white mb-1 block">
-                    Telephone Number
+                    Telephone Number <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="text"
                       placeholder="Enter Telephone Number"
-                      {...register("telephone")}
+                      {...register("telephone", { required: "Telephone is required" })}
                       className={inputClass}
                     />
                   </div>
+                  {errors.telephone && (
+                    <p className="text-red-500 text-sm">{errors.telephone.message}</p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="text-white mb-1 block">Email Address</label>
+                  <label className="text-white mb-1 block">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
                   <div className={inputWrapperClass}>
                     <input
                       type="email"
                       placeholder="Enter Email Address"
-                      {...register("email")}
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: "Enter a valid email address",
+                        },
+                      })}
                       className={inputClass}
                     />
                   </div>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
 
               {/* Address */}
               <div>
-                <label className="text-white mb-1 block">Address</label>
+                <label className="text-white mb-1 block">
+                  Address <span className="text-red-500">*</span>
+                </label>
                 <div className={inputWrapperClass}>
                   <input
                     type="text"
                     placeholder="Street/Apartment/City/State/ZIP"
-                    {...register("address")}
+                    {...register("address", { required: "Address is required" })}
                     className={inputClass}
                   />
                 </div>
+                {errors.address && (
+                  <p className="text-red-500 text-sm">{errors.address.message}</p>
+                )}
               </div>
 
               {/* Emergency Contact */}
@@ -231,7 +292,8 @@ const TempApplyJob = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 mt-4">
                 <div>
                   <label className="text-white mb-3 block">
-                    Emergency Contact Person Name *
+                    Emergency Contact Person Name{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <input
@@ -250,7 +312,8 @@ const TempApplyJob = () => {
 
                 <div>
                   <label className="text-white mb-3  block">
-                    Relation With Emergency Contact Person *
+                    Relation With Emergency Contact Person{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <input
@@ -271,7 +334,8 @@ const TempApplyJob = () => {
 
                 <div>
                   <label className="text-white mb-3  block">
-                    Emergency Contact Person’s Telephone *
+                    Emergency Contact Person’s Telephone{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <input
@@ -294,11 +358,12 @@ const TempApplyJob = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
                   <label className="text-white mb-1 block">
-                    Type of Employment Desired
+                    Type of Employment Desired{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className={inputWrapperClass}>
                     <select
-                      {...register("employmentType")}
+                      {...register("employmentType", { required: "Employment type is required" })}
                       className={inputClass}
                     >
                       <option value="">Select</option>
@@ -306,6 +371,9 @@ const TempApplyJob = () => {
                       <option value="temp">Temp Employee</option>
                     </select>
                   </div>
+                  {errors.employmentType && (
+                    <p className="text-red-500 text-sm">{errors.employmentType.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -695,26 +763,51 @@ const TempApplyJob = () => {
               </div>
 
               {/* Employee Signature */}
+
               <div className="mb-6">
-                <label className="text-white block mb-2">
-                  Employee Signature * (Take a Picture of your signature For
-                  Upload)
+                <label className="text-white block mb-3">
+                  Employee Signature <span className="text-red-500">*</span>{" "}
+                  (Take a Picture of your signature For Upload)
                 </label>
-                <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851]  rounded-md mt-1 flex items-center justify-center">
-                  <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
-                    <span className="text-center">Upload Signature</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      {...register("employeeSignature", {
-                        required: "Signature is required",
-                      })}
-                      className="hidden"
+
+                {/* Upload Button Hide যদি preview থাকে */}
+                {!preview && (
+                  <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851] rounded-md mt-1 flex items-center justify-center">
+                    <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
+                      <span className="text-center">Upload Signature</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        {...register("employeeSignature", {
+                          required: "Signature is required",
+                          onChange: handleFileChange,
+                        })}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {/* Image Preview with Cross */}
+                {preview && (
+                  <div className="mt-3 relative inline-block">
+                    <img
+                      src={preview}
+                      alt="Signature Preview"
+                      className="w-[200px] h-[80px] object-contain border rounded-md"
                     />
-                  </label>
-                </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                )}
+
                 {errors.employeeSignature && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-500 text-sm mt-2">
                     {errors.employeeSignature.message}
                   </p>
                 )}
@@ -732,7 +825,7 @@ const TempApplyJob = () => {
 
               <button
                 type="button"
-                onClick={nextStep}
+                onClick={nextStepHandler}
                 className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
               >
                 Next
@@ -751,6 +844,7 @@ const TempApplyJob = () => {
             step={step}
             errors={errors}
             handleSubmit={handleSubmit}
+            trigger={trigger}
           ></WorkExperienceForm>
         </div>
       )}
