@@ -236,13 +236,10 @@ const TempApplyJob = () => {
                     <input
                       type="text"
                       placeholder="Enter Telephone Number"
-                      {...register("telephone", { required: "Telephone is required" })}
+                      {...register("telephone")}
                       className={inputClass}
                     />
                   </div>
-                  {errors.telephone && (
-                    <p className="text-red-500 text-sm">{errors.telephone.message}</p>
-                  )}
                 </div>
 
                 <div>
@@ -253,19 +250,10 @@ const TempApplyJob = () => {
                     <input
                       type="email"
                       placeholder="Enter Email Address"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                          message: "Enter a valid email address",
-                        },
-                      })}
+                      {...register("email")}
                       className={inputClass}
                     />
                   </div>
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email.message}</p>
-                  )}
                 </div>
               </div>
 
@@ -278,13 +266,10 @@ const TempApplyJob = () => {
                   <input
                     type="text"
                     placeholder="Street/Apartment/City/State/ZIP"
-                    {...register("address", { required: "Address is required" })}
+                    {...register("address")}
                     className={inputClass}
                   />
                 </div>
-                {errors.address && (
-                  <p className="text-red-500 text-sm">{errors.address.message}</p>
-                )}
               </div>
 
               {/* Emergency Contact */}
@@ -363,7 +348,7 @@ const TempApplyJob = () => {
                   </label>
                   <div className={inputWrapperClass}>
                     <select
-                      {...register("employmentType", { required: "Employment type is required" })}
+                      {...register("employmentType")}
                       className={inputClass}
                     >
                       <option value="">Select</option>
@@ -371,9 +356,6 @@ const TempApplyJob = () => {
                       <option value="temp">Temp Employee</option>
                     </select>
                   </div>
-                  {errors.employmentType && (
-                    <p className="text-red-500 text-sm">{errors.employmentType.message}</p>
-                  )}
                 </div>
 
                 <div>
