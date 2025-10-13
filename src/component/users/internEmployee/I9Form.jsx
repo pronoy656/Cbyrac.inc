@@ -184,7 +184,7 @@ const I9Form = ({ prevStep, nextStep, step }) => {
                   {...register("dob", {
                     required: "Date of Birth is required",
                   })}
-                  className={inputClass}
+                  className={`date-input ${inputClass}`}
                 />
               </div>
               {errors.dob && (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ProgressBar from "../../progressBar/ProgressBar";
+import toast from "react-hot-toast";
 
 const TermsText = ({
   prevStep,
@@ -23,6 +24,19 @@ const TermsText = ({
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
     console.log("Checkbox clicked:", !isChecked);
+  };
+
+  // Function to handle the "Next" button click
+  const handleNext = () => {
+    if (!isChecked) {
+      console.log("Toast shown");
+      // Show toast if checkbox is not checked
+      toast.error("You must acknowledge the terms before proceeding.");
+
+      return;
+    }
+
+    nextStep(); // Proceed to the next step if checkbox is checked
   };
 
   return (
@@ -232,7 +246,7 @@ const TermsText = ({
 
               <button
                 type="button"
-                onClick={nextStep}
+                onClick={handleNext}
                 className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
                 disabled={!isChecked}
                 Disable

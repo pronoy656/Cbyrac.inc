@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "../../progressBar/ProgressBar";
+import toast from "react-hot-toast";
 
 const CertificationText = ({
   prevStep,
@@ -12,6 +13,26 @@ const CertificationText = ({
 }) => {
   const totalSteps = 8; // total number of steps for progress bar
 
+  const [isChecked, setIsChecked] = useState(false); //state to track checkbox status
+
+  //  Function to handle checkbox change
+  const handleCheckboxChange = () => {
+    setIsChecked((prev) => !prev);
+    console.log("Checkbox clicked:", !isChecked);
+  };
+
+  // Function to handle the "Next" button click
+  const handleNext = () => {
+    if (!isChecked) {
+      console.log("Toast shown");
+      // Show toast if checkbox is not checked
+      toast.error("You must acknowledge the terms before proceeding.");
+
+      return;
+    }
+
+    nextStep(); // Proceed to the next step if checkbox is checked
+  };
   //   const {
   //     register,
   //     handleSubmit,
@@ -60,7 +81,7 @@ const CertificationText = ({
           <p className="text-2xl font-medium mt-8 ">
             APPLICANT CERTIFICATION :
           </p>
-          <div className="border w-72 mb-5"></div>
+          <div className="border w-79 mb-5"></div>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="rounded-2xl  max-w-7xl mx-auto"
@@ -77,7 +98,7 @@ const CertificationText = ({
               adopted this Substance Abuse Policy.
             </p>
             <p className="text-2xl font-medium mt-8 ">1. PURPOSE AND SCOPE</p>
-            <div className="border w-72 mb-5"></div>
+            <div className="border w-68 mb-5"></div>
             <p className="text-lg font-normal leading-7 mb-6 text-gray-200">
               1.01 PURPOSE: The purpose of this Policy is to maintain a safe,
               healthful, and efficient working environment by eliminating any
@@ -96,7 +117,7 @@ const CertificationText = ({
             <p className="text-2xl font-medium mt-8 ">
               2. DISCIPLINARY ACTION AND PROHIBITED CONDUCT
             </p>
-            <div className="border w-72 mb-5"></div>
+            <div className="border w-150 mb-5"></div>
             <p className="text-lg font-normal mb-6 leading-relaxed text-gray-200">
               2.01 DISCIPLINARY ACTION: An employee's failure to comply with any
               part of this policy will result in disciplinary action up to and
@@ -131,7 +152,7 @@ const CertificationText = ({
               any other substance abuse.
             </p>
             <p className="text-2xl font-medium mt-8 ">3. TESTING</p>
-            <div className="border w-72 mb-5"></div>
+            <div className="border w-32 mb-5"></div>
             <p>
               3.01 DEFINITION: For the purpose of this policy, "drug" is defined
               as any alcoholic beverage, illegal inhalant, illegal drug or other
@@ -199,7 +220,7 @@ const CertificationText = ({
             <p className="text-2xl font-medium mt-8 ">
               4. MISCELLANEOUS PROVISION
             </p>
-            <div className="border w-72 mb-5"></div>
+            <div className="border w-90 mb-5"></div>
             <p>
               4.01 COOPERATION WITH LAW ENFORCEMENT: In addition, any illegal
               drug or other substance obtained by the Company from any employee
@@ -236,10 +257,25 @@ const CertificationText = ({
               laboratory or medical facility{" "}
             </p>
             <p>conducting the drug test.</p>
-            <p className="text-[28px] font-bold">
+            <p className="text-[28px] font-bold mt-8">
               CBYRAC, INC.Substance Abuse Policy – English
             </p>
-
+            {/* Checkbox section */}
+            <div className="mb-6 mt-6">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  value="US Citizen"
+                  {...register("citizenship", {
+                    required: "You must select at least one option",
+                  })}
+                  onChange={handleCheckboxChange}
+                  className="w-5 h-5"
+                />
+                In signing below, I acknowledge that I have read and understand
+                all the terms of this Application for Employment
+              </label>
+            </div>
             {/* Employee Signature and date */}
             <div className="grid grid-cols-1 sm:grid-cols-3 mb-4">
               <div>
@@ -266,14 +302,8 @@ const CertificationText = ({
                 )}
               </div>
             </div>
-            <button
-              type="submit"
-              className="mt-9 px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
-            >
-              Submit
-            </button>
           </form>
-          <div className="flex justify-center mt-6 gap-4">
+          <div className="flex justify-center mt-12 gap-4">
             <button
               type="button"
               onClick={prevStep}
@@ -284,7 +314,7 @@ const CertificationText = ({
 
             <button
               type="button"
-              onClick={nextStep}
+              onClick={handleNext}
               className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
             >
               Next
