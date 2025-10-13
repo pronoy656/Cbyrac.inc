@@ -208,7 +208,7 @@ const TermsText = ({
                   <input
                     type="date"
                     {...register("signDate", { required: "Date is required" })}
-                    className={inputClass}
+                    className={`py-3.5 date-input  ${inputClass}`}
                   />
                 </div>
                 {errors.signDate && (
@@ -218,12 +218,6 @@ const TermsText = ({
                 )}
               </div>
             </div>
-            <button
-              type="submit"
-              className="mt-9 px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
-            >
-              Submit
-            </button>
           </form>
           <div className="flex justify-center mt-6 gap-4">
             <button
