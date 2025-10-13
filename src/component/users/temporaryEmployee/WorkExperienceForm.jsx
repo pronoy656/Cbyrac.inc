@@ -85,20 +85,8 @@ const WorkExperienceForm = ({ prevStep, nextStep }) => {
                 internships, or military service. Incomplete responses may
                 disqualify your application.
               </p>
-
-              {/* <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  value="US Citizen"
-                  {...register("citizenship", {
-                    required: "You must select at least one option",
-                  })}
-                  className="w-5 h-5"
-                />
-                Agree With Above Conditions
-              </label> */}
             </div>
-            {/* Additional General Info */}
+
             {/* Employer 1 Info */}
             <p className="text-[32px] font-bold mt-8 ">Employer 1</p>
             <div className="border-2 w-44 mb-5"></div>
@@ -349,7 +337,7 @@ const WorkExperienceForm = ({ prevStep, nextStep }) => {
             </div>
             <div>
               <div className="mb-4">
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   What will this employer say was the reason your employment
                   terminated?
                 </label>
@@ -638,8 +626,8 @@ const WorkExperienceForm = ({ prevStep, nextStep }) => {
               </div>
             </div>
             <div>
-              <div>
-                <label className="text-white mb-1 block">
+              <div className="mb-4">
+                <label className="text-white mb-2 block">
                   What will this employer say was the reason your employment
                   terminated?
                 </label>
@@ -652,8 +640,8 @@ const WorkExperienceForm = ({ prevStep, nextStep }) => {
                   />
                 </div>
               </div>
-              <div>
-                <label className="text-white mb-1 block">
+              <div className="mb-4">
+                <label className="text-white mb-2 block">
                   Were you ever disciplined? If so, for what?
                 </label>
                 <div className={inputWrapperClass}>
@@ -666,7 +654,7 @@ const WorkExperienceForm = ({ prevStep, nextStep }) => {
                 </div>
               </div>
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   How much notice did you give when resigning? If none, explain.
                 </label>
                 <div className={inputWrapperClass}>

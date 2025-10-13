@@ -17,11 +17,6 @@ const References = ({ prevStep, nextStep }) => {
     trigger, // <-- important for step-wise validation
   } = useForm();
 
-  //   const onSubmit = (data) => {
-  //     console.log("Bank Account Data Submitted:", data);
-  //     alert("Form submitted successfully! Check console.");
-  //   };
-
   const onSubmit = (data) => {
     console.log("Form Data Submitted:", data);
     alert("Temp employee Form submitted successfully!");
@@ -82,7 +77,7 @@ const References = ({ prevStep, nextStep }) => {
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   Have you ever been terminated or asked to resign from any job?{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -106,7 +101,7 @@ const References = ({ prevStep, nextStep }) => {
               </div>
 
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   If Yes how many times? <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
@@ -126,7 +121,7 @@ const References = ({ prevStep, nextStep }) => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   Has your employment ever been terminated by mutual agreement?{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -149,7 +144,7 @@ const References = ({ prevStep, nextStep }) => {
                 )}
               </div>
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   If Yes how many times? <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
@@ -169,7 +164,7 @@ const References = ({ prevStep, nextStep }) => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   Have you ever been given the choice to resign rather than be
                   terminated? <span className="text-red-500">*</span>
                 </label>
@@ -192,7 +187,7 @@ const References = ({ prevStep, nextStep }) => {
                 )}
               </div>
               <div>
-                <label className="text-white mb-1 block">
+                <label className="text-white mb-2 block">
                   If Yes how many times? <span className="text-red-500">*</span>
                 </label>
                 <div className={inputWrapperClass}>
