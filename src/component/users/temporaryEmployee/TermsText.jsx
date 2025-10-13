@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ProgressBar from "../../progressBar/ProgressBar";
 
 const TermsText = ({
@@ -9,26 +10,24 @@ const TermsText = ({
   errors,
   onSubmit,
 }) => {
-  const totalSteps = 8; // total number of steps for progress bar
+  const totalSteps = 12; //total number of steps for progress bar
 
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm();
-
-  //   const onSubmit = (data) => {
-  //     console.log("Bank Account Data Submitted:", data);
-  //     alert("Form submitted successfully! Check console.");
-  //   };
+  const [isChecked, setIsChecked] = useState(false); //state to track checkbox status
 
   const inputWrapperClass =
     "rounded-md bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] mt-1 p-[1px]";
   const inputClass =
     "w-full bg-slate-900 text-white rounded-md py-2 px-3 focus:outline-none focus:ring-0";
+
+  //  Function to handle checkbox change
+  const handleCheckboxChange = () => {
+    setIsChecked((prev) => !prev);
+    console.log("Checkbox clicked:", !isChecked);
+  };
+
   return (
     <div>
-      <div className="text-white ">
+      <div className="text-white">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex space-x-96 mb-4">
@@ -53,16 +52,15 @@ const TermsText = ({
               Please fill all forms. Resumes are not a substitute for a
               completed application
             </p>
-            {/* progressbar */}
+            {/* progress bar */}
             <ProgressBar currentStep={step} totalSteps={totalSteps} />
           </div>
-          <p className="text-2xl font-medium mt-8 ">
-            APPLICANT CERTIFICATION :
-          </p>
+
+          <p className="text-2xl font-medium mt-8">APPLICANT CERTIFICATION :</p>
           <div className="border w-72 mb-5"></div>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-2xl  max-w-7xl mx-auto"
+            className="rounded-2xl max-w-7xl mx-auto"
           >
             {/* Terms and condition text*/}
             <p className="text-lg font-normal leading-7 mb-6 text-gray-200">
@@ -159,6 +157,8 @@ const TermsText = ({
               DO NOT SIGN UNTIL YOU HAVE READ ALL THE INFORMATION CONTAINED IN
               THE APPLICATION.
             </p>
+
+            {/* Checkbox section */}
             <div className="mb-6">
               <label className="flex items-center gap-2">
                 <input
@@ -167,6 +167,7 @@ const TermsText = ({
                   {...register("citizenship", {
                     required: "You must select at least one option",
                   })}
+                  onChange={handleCheckboxChange}
                   className="w-5 h-5"
                 />
                 In signing below, I acknowledge that I have read and understand
@@ -218,24 +219,34 @@ const TermsText = ({
                 )}
               </div>
             </div>
-          </form>
-          <div className="flex justify-center mt-6 gap-4">
-            <button
-              type="button"
-              onClick={prevStep}
-              className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-            >
-              Previous
-            </button>
 
-            <button
-              type="button"
-              onClick={nextStep}
-              className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
-            >
-              Next
-            </button>
-          </div>
+            {/* Next and Previous buttons */}
+            <div className="flex justify-center mt-12 gap-4">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              >
+                Previous
+              </button>
+
+              <button
+                type="button"
+                onClick={nextStep}
+                className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
+                disabled={!isChecked}
+                Disable
+                the
+                button
+                until
+                checkbox
+                is
+                clicked
+              >
+                Next
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

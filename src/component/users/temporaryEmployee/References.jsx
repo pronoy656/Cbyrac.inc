@@ -266,6 +266,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.name`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter name"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -273,6 +274,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.position`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter position"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -280,6 +282,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.company`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter company"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -287,6 +290,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.telephone`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter telephone"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -294,6 +298,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.occupation`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter occupation"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -301,6 +306,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.bestTimeToCall`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter best time to call"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -308,6 +314,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.workRelationship`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter work relationship"
                       />
                     </td>
                     <td className="border border-[#8D6851] px-4 py-2">
@@ -315,6 +322,7 @@ const References = ({ prevStep, nextStep }) => {
                         type="text"
                         {...register(`references.${index}.yearsKnown`)}
                         className="w-full bg-slate-900 text-white py-1 rounded focus:outline-none"
+                        placeholder="Enter years known"
                       />
                     </td>
                   </tr>
