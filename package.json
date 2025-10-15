@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",
+    "@reduxjs/toolkit": "^2.9.0",
     "@tailwindcss/vite": "^4.1.13",
     "antd": "^5.27.4",
+    "axios": "^1.12.2",
     "date-fns": "^4.1.0",
     "localforage": "^1.10.0",
     "lucide-react": "^0.544.0",
@@ -23,6 +25,7 @@
     "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
     "recharts": "^3.2.1",
     "sort-by": "^1.2.0",

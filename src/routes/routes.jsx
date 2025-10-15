@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     element: <RoleSelector />,
   },
   {
-    path: "/intern-register",
+    path: "/register",
     element: <InternRegister />,
   },
   {

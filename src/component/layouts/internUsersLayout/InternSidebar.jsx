@@ -66,6 +66,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Clock, Calendar, Briefcase, LogOut } from "lucide-react";
 import { Button } from "../../ui/Button";
+import { logout } from "../../../redux/feature/user/userSlice";
 
 const InternSidebar = () => {
   const location = useLocation();
@@ -91,6 +92,13 @@ const InternSidebar = () => {
       path: "/payroll-calendar",
     },
   ];
+
+  const handleLogout = () => {
+    // Clear user info from localStorage
+    logout();
+    // Redirect to login page or any other action
+    window.location.href = "/sign-in";
+  };
 
   return (
     <div className="w-64 h-screen bg-sidebar flex flex-col">
@@ -137,6 +145,7 @@ const InternSidebar = () => {
       <div className="p-4 border-t border-sidebar-border">
         <Link to="/logout">
           <Button
+            onClick={handleLogout}
             variant="outline"
             className="w-full justify-start gap-3 h-12 border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent bg-transparent"
           >

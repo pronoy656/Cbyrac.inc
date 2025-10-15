@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { TfiBag } from "react-icons/tfi";
 import { CiCircleCheck } from "react-icons/ci";
-
+import { useNavigate } from "react-router-dom";
 const RoleSelector = () => {
-  const [selectedJobType, setSelectedJobType] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState("Fit2Lead Intern");
+  const navigate = useNavigate();
 
+  // 🔹 Handle selection dynamically based on value passed
   const handleSelection = (jobType) => {
     setSelectedJobType(jobType);
+    navigate("/register", { state: { selectedJobType: jobType } });
+    console.log("Selected:", jobType);
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#05051A]">

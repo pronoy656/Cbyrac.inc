@@ -1,7 +1,9 @@
 import { Eye, EyeOff } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { registerUser } from "../../../redux/feature/user/userSlice";
 
 const InternRegister = () => {
   const {
@@ -10,12 +12,45 @@ const InternRegister = () => {
     formState: { errors },
     watch,
   } = useForm();
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const selectedJobType = location.state?.selectedJobType;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { isSuccess } = useSelector((state) => state.user);
 
+  // redirect when role not selected
+  useEffect(() => {
+    if (!selectedJobType) {
+      navigate("/role-selector");
+    }
+  }, [selectedJobType, navigate]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/sign-in");
+    }
+  }, [isSuccess, navigate]);
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    // 1️⃣ Check if passwords match
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // 2️⃣ Create payload object
+    const payload = {
+      ...data, // all form fields
+      employee_role: selectedJobType, // append jobType
+    };
+
+    // 3️⃣ Remove confirmPassword before sending
+    delete payload.confirmPassword;
+
+    // 4️⃣ Dispatch registration
+    dispatch(registerUser(payload));
+    console.log("Payload Submitted:", payload);
   };
 
   const password = watch("password");
@@ -42,7 +77,8 @@ const InternRegister = () => {
           </div>
           <p className="text-white text-2xl font-semibold mb-4">CBYRAC, Inc</p>
           <h1 className="text-white text-4xl font-bold">
-            Creating Fit2Lead Intern Account
+            Creating <span className="text-red-500">{selectedJobType} </span>
+            Account
           </h1>
         </div>
 

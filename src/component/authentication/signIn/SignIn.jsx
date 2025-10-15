@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../../redux/feature/user/userSlice";
 
 const SignIn = () => {
   const {
@@ -9,12 +11,21 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  //   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  useEffect(() => {
+    if (userInfo?.token && userInfo?.role === "Fit2Lead Intern") {
+      navigate("/");
+    } else if (userInfo?.token && userInfo?.role === "Temporary Employee") {
+      navigate("/temporary-employee");
+    }
+  }, [userInfo, navigate]);
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    delete data.remember;
+    dispatch(loginUser(data));
   };
 
   //   const password = watch("password");
