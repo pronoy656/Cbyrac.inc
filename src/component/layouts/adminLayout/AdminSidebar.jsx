@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Clock, Calendar, Briefcase, LogOut } from "lucide-react";
+import { Clock, Calendar, Briefcase, LogOut, FormInput } from "lucide-react";
 import { Button } from "../../ui/Button";
 // import { Button } from "../../ui/Button";
 
@@ -26,6 +26,12 @@ const AdminSidebar = () => {
       label: "Calendar",
       icon: <Calendar className="w-5 h-5" />,
       path: "/admin/admin-calender",
+    },
+    {
+      key: "admin Form",
+      label: "Admin Form",
+      icon: <FormInput className="w-5 h-5" />,
+      path: "/admin/admin-form",
     },
   ];
 

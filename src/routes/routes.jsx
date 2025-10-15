@@ -18,6 +18,7 @@ import TimeSheetTemp from "../component/users/temporaryEmployee/TimeSheetTemp";
 import PayrollCalender from "../component/users/internEmployee/PayrollCalender";
 import InternMainLayout from "../component/layouts/internUsersLayout/InternMainLayout";
 import Otp from "../component/authentication/signIn/Otp";
+import AdminForm from "../component/users/admin/adminForm/AdminForm";
 
 const router = createBrowserRouter([
   {
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
       {
         path: "admin-calender",
         element: <AdminCalender />,
+      },
+      {
+        path: "admin-form",
+        element: <AdminForm />,
       },
     ],
   },

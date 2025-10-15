@@ -65,21 +65,6 @@ const OnlyCbyracInc = ({
             onSubmit={handleSubmit(onSubmit)}
             className="rounded-2xl  max-w-7xl mx-auto"
           >
-            {/* Step 2 Info */}
-            <div>
-              {/* <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  value="US Citizen"
-                  {...register("citizenship", {
-                    required: "You must select at least one option",
-                  })}
-                  className="w-5 h-5"
-                />
-                Agree With Above Conditions
-              </label> */}
-            </div>
-            {/* Additional General Info */}
             <div>
               <label className="text-white mb-1 block">Check One </label>
               <div className={inputWrapperClass}>
