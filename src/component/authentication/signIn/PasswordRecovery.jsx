@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Eye, EyeOff, Mail } from "lucide-react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPassword } from "../../../redux/feature/user/userSlice";
+import { useEffect, useRef } from "react";
 
 const PasswordRecovery = () => {
   const {
@@ -8,9 +11,18 @@ const PasswordRecovery = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const navigate = useNavigate();
+  const { isLoading, isSuccess } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const formDataRef = useRef(null);
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/otp", { state: { email: formDataRef?.current.email } });
+    }
+  }, [isSuccess, navigate]);
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    formDataRef.current = data;
+    dispatch(forgotPassword(data));
   };
 
   // ✅ Gradient Border Wrapper
@@ -20,6 +32,10 @@ const PasswordRecovery = () => {
   // ✅ Input Class
   const inputClass =
     "w-full px-3 py-2 bg-[#05051A] text-white rounded-md focus:outline-none";
+
+  if (isLoading) {
+    return <div className="text-white text-center mt-10">Loading...</div>;
+  }
   return (
     <div className="bg-[#05051A] min-h-screen flex items-center justify-center">
       <div className="max-w-3xl w-full mx-auto rounded-lg p-8">

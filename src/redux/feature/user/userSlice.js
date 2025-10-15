@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance, { axiosApi } from "../../../utils/axiosInstance";
+import { axiosApi } from "../../../utils/axiosInstance";
 
 // register User
-
 export const registerUser = createAsyncThunk(
   "user/register",
   async (payload, { rejectWithValue }) => {
@@ -34,11 +33,10 @@ export const loginUser = createAsyncThunk(
 // 🔹 Forgot Password
 export const forgotPassword = createAsyncThunk(
   "user/forgotPassword",
-  async (email, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/auth/forgot-password`, {
-        email,
-      });
+      const response = await axiosApi.post(`/auth/forget-password`, data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Forgot password failed");
@@ -49,13 +47,12 @@ export const forgotPassword = createAsyncThunk(
 // 🔹 Verify OTP
 export const verifyOtp = createAsyncThunk(
   "user/verifyOtp",
-  async ({ email, otp }, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/auth/verify-otp`, {
-        email,
-        otp,
-      });
-      return response.data;
+      console.log(payload);
+      const response = await axiosApi.post(`/auth/verify-email`, payload);
+      console.log(response.data.data);
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "OTP verification failed");
     }
@@ -65,12 +62,15 @@ export const verifyOtp = createAsyncThunk(
 // 🔹 Reset Password
 export const resetPassword = createAsyncThunk(
   "user/resetPassword",
-  async ({ email, newPassword }, { rejectWithValue }) => {
+  async ({ payload, token }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/auth/reset-password`, {
-        email,
-        newPassword,
+      console.log("Reset Payload:", payload, token);
+      const response = await axiosApi.post(`/auth/reset-password`, payload, {
+        headers: {
+          Authorization: `${token}`,
+        },
       });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Password reset failed");
@@ -156,7 +156,7 @@ const userSlice = createSlice({
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.message = action.payload.message;
+        state.data = action.payload;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.isLoading = false;
@@ -171,7 +171,7 @@ const userSlice = createSlice({
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.message = action.payload.message;
+        state.message = action.payload;
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;

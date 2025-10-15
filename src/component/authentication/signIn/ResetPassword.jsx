@@ -1,7 +1,9 @@
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { resetPassword } from "../../../redux/feature/user/userSlice";
 
 const ResetPassword = () => {
   const {
@@ -10,12 +12,36 @@ const ResetPassword = () => {
     formState: { errors },
     watch,
   } = useForm();
-
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const token = location.state?.token || "";
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data) => {
+    const payload = {
+      newPassword: data.password,
+      confirmPassword: data.confirmPassword,
+    };
+
+    try {
+      const result = await dispatch(resetPassword({ payload, token }));
+      if (resetPassword.fulfilled.match(result)) {
+        // Success → navigate
+        alert(result.payload.message || "Password reset successful!");
+        navigate("/sign-in");
+      } else {
+        // Error → show message
+        console.error("Password reset failed:", result.payload);
+        alert(
+          result.payload?.message || "Password reset failed. Please try again."
+        );
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const password = watch("password");
@@ -113,14 +139,12 @@ const ResetPassword = () => {
 
           {/* Submit */}
           <div className="flex justify-center">
-            <Link to={"/sign-in"}>
-              <button
-                type="submit"
-                className="px-28 py-3 rounded-md bg-[#8D6851] text-white font-semibold hover:opacity-90"
-              >
-                Confirm
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="px-28 py-3 rounded-md bg-[#8D6851] text-white font-semibold hover:opacity-90"
+            >
+              Confirm
+            </button>
           </div>
         </form>
       </div>

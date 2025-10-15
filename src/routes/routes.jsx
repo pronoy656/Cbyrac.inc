@@ -17,6 +17,7 @@ import AdminCalender from "../component/users/admin/adminCalender/AdminCalender"
 import TimeSheetTemp from "../component/users/temporaryEmployee/TimeSheetTemp";
 import PayrollCalender from "../component/users/internEmployee/PayrollCalender";
 import InternMainLayout from "../component/layouts/internUsersLayout/InternMainLayout";
+import Otp from "../component/authentication/signIn/Otp";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
   {
     path: "/reset-password",
     element: <ResetPassword />,
+  },
+  {
+    path: "/otp",
+    element: <Otp />,
   },
   {
     path: "/admin",
