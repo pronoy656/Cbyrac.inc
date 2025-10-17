@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import ProgressBar from "../../progressBar/ProgressBar";
 import BankAccount from "./BankAccount";
 import I9Form from "./I9Form";
 import W4Form from "./W4Form";
 import SelectCitizenship from "./SelectCitizenship";
-import { X } from "lucide-react"; // cross icon
+import { X } from "lucide-react";
 
 const ApplyJobs = () => {
   const [step, setStep] = useState(1);
-  const [preview, setPreview] = useState(null); // For Signature preview
+  const [preview, setPreview] = useState(null);
+  const [formData, setFormData] = useState({});
   const totalSteps = 5;
 
   const {
@@ -18,36 +18,92 @@ const ApplyJobs = () => {
     handleSubmit,
     formState: { errors },
     getValues,
-    trigger, // <-- important for step-wise validation
+    trigger,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data Submitted:", data);
-    alert("Form submitted successfully! Check console.");
-  };
-
-  // Step-wise Next button validation
   const nextStepHandler = async () => {
-    // Trigger validation for all fields
     const result = await trigger();
     if (result) {
-      const allData = getValues(); // ✅ এখন ব্যবহার হচ্ছে
-      console.log("All form data so far:", allData); // 👈 Console-এ দেখাবে
+      const allData = getValues();
+      console.log(`✅ Step ${step} Data:`, allData);
+
+      setFormData((prev) => ({
+        ...prev,
+        ...(step === 1 && {
+          generalInfo: {
+            firstName: allData.firstName,
+            middleName: allData.middleName,
+            lastName: allData.lastName,
+            ssn: allData.ssn,
+            dateOfBirth: allData.dob,
+            applicationDate: allData.applicationDate,
+            email: allData.email,
+            telephoneNumber: allData.telephone,
+            address: allData.address,
+            emergencyContact: {
+              name: allData.emergencyName,
+              relationship: allData.emergencyRelation,
+              phone: allData.emergencyTelephone,
+            },
+            desiredEmploymentType: allData.employmentType,
+            desiredSalary: allData.desiredSalary
+              ? Number(allData.desiredSalary)
+              : undefined,
+            hourlyRate: allData.hourlyRate
+              ? Number(allData.hourlyRate)
+              : undefined,
+            appliedPosition: "Intern",
+            department: "Fit2Lead",
+            overtime: "No",
+            startDate: allData.startDate,
+            previouslyApplied: allData.previousApplication === "yes",
+            previousApplicationDate: allData.applicationDetails,
+            previouslyEmployed: allData.previousEmployment === "yes",
+            previousSeparationReason: allData.employmentDetails,
+            education: {
+              schoolName: allData.highSchoolName,
+              major: allData.highSchoolMajor,
+              graduationStatus: allData.highSchoolGraduationStatus,
+              yearsCompleted: allData.highSchoolYears
+                ? Number(allData.highSchoolYears)
+                : undefined,
+              honorsReceived: allData.highSchoolHonors ? true : false,
+            },
+            specialSkills: allData.skills,
+            signature: allData.employeeSignature
+              ? `/employeeSignature1/${allData.employeeSignature.name}`
+              : undefined,
+          },
+        }),
+      }));
 
       setStep((prev) => prev + 1);
     } else {
-      // Errors exist, stay on current step
       console.log("Validation errors:", errors);
     }
   };
-  // Signature preview handler
+
+  const onSubmit = (data) => {
+    const finalData = {
+      _id: { $oid: "68e6b00ffd5acf1ba93f3b54" },
+      ...formData,
+      ...(step === 5 && { citizenShipForm: data.citizenShipForm }),
+      createdAt: { $date: new Date().toISOString() },
+      updatedAt: { $date: new Date().toISOString() },
+      __v: 0,
+    };
+
+    console.log("🎯 Final Full Object:", finalData);
+    alert("Form submitted successfully! Check console.");
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
   };
-  // For removing the selected image
+
   const handleRemoveImage = () => {
     setPreview(null);
   };
@@ -64,7 +120,6 @@ const ApplyJobs = () => {
       {step === 1 && (
         <div className="text-white">
           <div className="max-w-7xl mx-auto">
-            {/* Header */}
             <div className="flex space-x-96 mb-4">
               <div className="text-sm">
                 <div className="font-bold text-lg mb-2">CBYRAC, INC</div>
@@ -78,7 +133,6 @@ const ApplyJobs = () => {
               </div>
             </div>
 
-            {/* Title */}
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold mb-2">
                 Employment Application
@@ -92,9 +146,8 @@ const ApplyJobs = () => {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="rounded-2xl  max-w-7xl mx-auto"
+              className="rounded-2xl max-w-7xl mx-auto"
             >
-              {/* General Information */}
               <h2 className="text-xl font-bold text-white mb-4">
                 General Information
               </h2>
@@ -154,7 +207,6 @@ const ApplyJobs = () => {
                 </div>
               </div>
 
-              {/* SSN, DOB, Application Date */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
                   <label className="text-white mb-3 block">
@@ -213,7 +265,6 @@ const ApplyJobs = () => {
                 </div>
               </div>
 
-              {/* Additional General Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="text-white mb-3 block">
@@ -223,10 +274,17 @@ const ApplyJobs = () => {
                     <input
                       type="text"
                       placeholder="Enter Telephone Number"
-                      {...register("telephone")}
+                      {...register("telephone", {
+                        required: "Telephone Number is required",
+                      })}
                       className={inputClass}
                     />
                   </div>
+                  {errors.telephone && (
+                    <p className="text-red-500 text-sm">
+                      {errors.telephone.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -237,14 +295,20 @@ const ApplyJobs = () => {
                     <input
                       type="email"
                       placeholder="Enter Email Address"
-                      {...register("email")}
+                      {...register("email", {
+                        required: "Email Address is required",
+                      })}
                       className={inputClass}
                     />
                   </div>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              {/* Address */}
               <div>
                 <label className="text-white mb-3 block">
                   Address <span className="text-red-500">*</span>
@@ -253,13 +317,18 @@ const ApplyJobs = () => {
                   <input
                     type="text"
                     placeholder="Street/Apartment/City/State/ZIP"
-                    {...register("address")}
+                    {...register("address", {
+                      required: "Address is required",
+                    })}
                     className={inputClass}
                   />
                 </div>
+                {errors.address && (
+                  <p className="text-red-500 text-sm">
+                    {errors.address.message}
+                  </p>
+                )}
               </div>
-
-              {/* Emergency Contact */}
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 mt-4">
                 <div>
@@ -283,7 +352,7 @@ const ApplyJobs = () => {
                 </div>
 
                 <div>
-                  <label className="text-white mb-3  block">
+                  <label className="text-white mb-3 block">
                     Relation With Emergency Contact Person{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -305,7 +374,7 @@ const ApplyJobs = () => {
                 </div>
 
                 <div>
-                  <label className="text-white mb-3  block">
+                  <label className="text-white mb-3 block">
                     Emergency Contact Person’s Telephone{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -335,7 +404,7 @@ const ApplyJobs = () => {
                   </label>
                   <div className={inputWrapperClass}>
                     <select
-                      {...register("employmentType")}
+                      {...register("employmentType", { required: "Required" })}
                       className={inputClass}
                     >
                       <option value="">Select</option>
@@ -343,6 +412,11 @@ const ApplyJobs = () => {
                       <option value="temp">Temp Employee</option>
                     </select>
                   </div>
+                  {errors.employmentType && (
+                    <p className="text-red-500 text-sm">
+                      {errors.employmentType.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -374,9 +448,7 @@ const ApplyJobs = () => {
                 </div>
               </div>
 
-              {/* Position & Department */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                {/* Position Applied For */}
                 <div>
                   <label className="text-white mb-3 block">
                     Position Applied For
@@ -392,7 +464,6 @@ const ApplyJobs = () => {
                   </div>
                 </div>
 
-                {/* Department */}
                 <div>
                   <label className="text-white mb-3 block">Department</label>
                   <div className={inputWrapperClass}>
@@ -406,7 +477,6 @@ const ApplyJobs = () => {
                   </div>
                 </div>
 
-                {/* Overtime */}
                 <div>
                   <label className="text-white mb-3 block">Overtime</label>
                   <div className={inputWrapperClass}>
@@ -422,7 +492,6 @@ const ApplyJobs = () => {
                 </div>
               </div>
 
-              {/* Start Date */}
               <div className="mb-4">
                 <label className="text-white mb-3 block">
                   Date On Which You Can Start Work If Hired
@@ -435,8 +504,6 @@ const ApplyJobs = () => {
                   />
                 </div>
               </div>
-
-              {/* Previous Application */}
 
               <div className="mb-4">
                 <label className="text-white mb-3 block">
@@ -496,7 +563,7 @@ const ApplyJobs = () => {
                   />
                 </div>
               </div>
-              {/* Educational Information */}
+
               <h2 className="text-xl font-bold text-white my-4">
                 Educational Information
               </h2>
@@ -526,7 +593,6 @@ const ApplyJobs = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* High School Row */}
                     <tr>
                       <td className="border border-[#8D6851] px-4 py-2">
                         High School
@@ -578,7 +644,6 @@ const ApplyJobs = () => {
                 </table>
               </div>
 
-              {/* Special Skills or Qualifications */}
               <div className="mb-6">
                 <label className="text-xl font-bold text-white">
                   Special Skills or Qualifications
@@ -592,14 +657,12 @@ const ApplyJobs = () => {
                 </div>
               </div>
 
-              {/* Employee Signature */}
               <div className="mb-6">
                 <label className="text-white block mb-3">
                   Employee Signature <span className="text-red-500">*</span>{" "}
                   (Take a Picture of your signature For Upload)
                 </label>
 
-                {/* Upload Button Hide যদি preview থাকে */}
                 {!preview && (
                   <div className="w-[350px] h-[50px] bg-gradient-to-l from-[#D4BFB2] to-[#8D6851] rounded-md mt-1 flex items-center justify-center">
                     <label className="w-full h-full flex items-center justify-center text-white cursor-pointer">
@@ -617,7 +680,6 @@ const ApplyJobs = () => {
                   </div>
                 )}
 
-                {/* Image Preview with Cross */}
                 {preview && (
                   <div className="mt-3 relative inline-block">
                     <img
@@ -648,14 +710,13 @@ const ApplyJobs = () => {
                 type="button"
                 onClick={prevStep}
                 className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-                disabled={step === 1} // disable prev on first step
+                disabled={step === 1}
               >
                 Previous
               </button>
 
               <button
                 type="button"
-                // onSubmit={onSubmit}
                 onClick={nextStepHandler}
                 className="px-6 py-2 bg-gradient-to-r from-[#8D6851] to-[#D3BFB2] text-white rounded-md hover:opacity-90"
               >
@@ -673,6 +734,9 @@ const ApplyJobs = () => {
           register={register}
           step={step}
           errors={errors}
+          setFormData={setFormData}
+          getValues={getValues}
+          trigger={trigger}
         />
       )}
 
@@ -683,7 +747,9 @@ const ApplyJobs = () => {
           prevStep={prevStep}
           nextStep={nextStepHandler}
           step={step}
-          handleSubmit={handleSubmit(onSubmit)}
+          setFormData={setFormData}
+          getValues={getValues}
+          trigger={trigger}
         />
       )}
 
@@ -694,7 +760,9 @@ const ApplyJobs = () => {
           prevStep={prevStep}
           nextStep={nextStepHandler}
           step={step}
-          handleSubmit={handleSubmit(onSubmit)}
+          setFormData={setFormData}
+          getValues={getValues}
+          trigger={trigger}
         />
       )}
 
@@ -703,9 +771,12 @@ const ApplyJobs = () => {
           register={register}
           errors={errors}
           prevStep={prevStep}
-          nextStep={nextStepHandler}
           step={step}
           handleSubmit={handleSubmit(onSubmit)}
+          formData={formData}
+          setFormData={setFormData}
+          getValues={getValues}
+          trigger={trigger}
         />
       )}
     </div>
