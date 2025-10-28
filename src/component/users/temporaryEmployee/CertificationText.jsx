@@ -11,7 +11,7 @@ const CertificationText = ({
   errors,
   onSubmit,
 }) => {
-  const totalSteps = 8; // total number of steps for progress bar
+  const totalSteps = 12; // total number of steps for progress bar
 
   const [isChecked, setIsChecked] = useState(false); //state to track checkbox status
 

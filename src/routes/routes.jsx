@@ -19,6 +19,7 @@ import PayrollCalender from "../component/users/internEmployee/PayrollCalender";
 import InternMainLayout from "../component/layouts/internUsersLayout/InternMainLayout";
 import Otp from "../component/authentication/signIn/Otp";
 import AdminForm from "../component/users/admin/adminForm/AdminForm";
+import PdfViewer from "../component/pdfViewer/PdfViewer";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
   {
     path: "/otp",
     element: <Otp />,
+  },
+  {
+    path: "/pdf-viewer",
+    element: <PdfViewer />,
   },
   {
     path: "/admin",

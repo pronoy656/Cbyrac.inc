@@ -475,7 +475,7 @@ const Timesheet = () => {
                   {uploadedFiles.map((uploadedFile, index) => (
                     <div
                       key={index}
-                      className="relative border border-border rounded-lg overflow-hidden bg-card hover:shadow-lg transition-shadow"
+                      className="relative border border-border rounded-lg overflow-hidden bg-card/80 hover:shadow-lg transition-shadow"
                     >
                       {/* Image Preview */}
                       {uploadedFile.type === "image" &&
@@ -484,17 +484,19 @@ const Timesheet = () => {
                             <img
                               src={uploadedFile.preview || "/placeholder.svg"}
                               alt={uploadedFile.file.name}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover rounded-t-lg"
                             />
+                            {/* Overlay gradient for better visibility */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                           </div>
                         )}
 
                       {/* PDF/Other File Preview */}
                       {uploadedFile.type !== "image" && (
                         <div className="w-full h-48 bg-muted flex items-center justify-center">
-                          <div className="text-center">
+                          <div className="text-center text-foreground">
                             {getFileIcon(uploadedFile.type)}
-                            <p className="text-xs text-muted-foreground mt-2">
+                            <p className="text-xs mt-2 opacity-80">
                               {uploadedFile.type === "pdf"
                                 ? "PDF Document"
                                 : "File"}
@@ -504,11 +506,11 @@ const Timesheet = () => {
                       )}
 
                       {/* File Info */}
-                      <div className="p-3 border-t border-border">
+                      <div className="p-3 border-t border-border bg-background/70 backdrop-blur-sm">
                         <p className="text-sm font-medium text-foreground truncate">
                           {uploadedFile.file.name}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-white">
                           {(uploadedFile.file.size / 1024).toFixed(2)} KB
                         </p>
                       </div>
@@ -516,7 +518,7 @@ const Timesheet = () => {
                       {/* Remove Button */}
                       <button
                         onClick={() => removeFile(index)}
-                        className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 rounded-full text-white transition-colors"
+                        className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 rounded-full text-white transition-colors shadow-md"
                         aria-label="Remove file"
                       >
                         <X className="w-4 h-4" />

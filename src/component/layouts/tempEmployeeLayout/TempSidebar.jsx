@@ -71,7 +71,7 @@ const TempSidebar = () => {
 
       {/* Logout Button */}
       <div className="p-4 border-t border-sidebar-border">
-        <Link to="/logout">
+        <Link to="/sign-in">
           <Button
             variant="outline"
             className="w-full justify-start gap-3 h-12 border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent bg-transparent"

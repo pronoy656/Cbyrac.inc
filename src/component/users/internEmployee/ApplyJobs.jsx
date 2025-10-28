@@ -877,6 +877,7 @@ const ApplyJobs = () => {
       console.log("Validation errors:", errors);
     }
   };
+  console.log("Step 1", formData);
 
   const prevStep = () => setStep((prev) => prev - 1);
 
@@ -915,15 +916,6 @@ const ApplyJobs = () => {
       alert("An error occurred. Please try again.");
     }
   };
-
-  // Helper function to generate MongoDB-like ID
-  // const generateObjectId = () => {
-  //   const timestamp = Math.floor(new Date().getTime() / 1000).toString(16);
-  //   const random = Array.from({ length: 16 }, () =>
-  //     Math.floor(Math.random() * 16).toString(16)
-  //   ).join("");
-  //   return timestamp + random;
-  // };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -1235,7 +1227,7 @@ const ApplyJobs = () => {
                       className={inputClass}
                     >
                       <option value="">Select</option>
-                      <option value="temp">Temp Employee</option>
+                      <option value="Temp Employee">Temp Employee</option>
                       <option value="Intern">Intern</option>
                       {/* <option value="Temp Employee">Temp Employee</option> */}
                     </select>
