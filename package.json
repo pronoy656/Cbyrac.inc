@@ -16,6 +16,7 @@
     "antd": "^5.27.4",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
+    "html2pdf.js": "^0.12.1",
     "localforage": "^1.10.0",
     "lucide-react": "^0.544.0",
     "match-sorter": "^8.1.0",
