@@ -1758,25 +1758,33 @@ const PdfViewer = () => {
                             First name and middle initial
                           </span>
                         </div>
-                        <div className="font-medium">John M</div>
+                        <div className="font-medium">
+                          <p></p>
+                        </div>
                       </div>
                       <div className="flex-1 border-r border-black p-2">
                         <div className="text-sm ml-1">Last name</div>
-                        <div className="font-medium">Smith</div>
+                        <div className="font-medium">
+                          <p></p>
+                        </div>
                       </div>
                       <div className="w-56 p-2">
                         <div className="text-sm mb-1">
                           (b){" "}
                           <span className="ml-1">Social security number</span>
                         </div>
-                        <div className="font-medium">123-45-6789</div>
+                        <div className="font-medium">
+                          <p></p>
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex border-b border-black">
                       <div className="flex-1 border-r border-black p-2">
                         <div className="text-sm mb-1">Address</div>
-                        <div className="font-medium">123 Main Street</div>
+                        <div className="font-medium">
+                          <p></p>
+                        </div>
                       </div>
                       <div className="w-56 p-2 text-sm leading-tight">
                         <div className="mb-0.5">Does your name match the</div>
@@ -1801,7 +1809,9 @@ const PdfViewer = () => {
                       <div className="text-sm mb-1">
                         City or town, state, and ZIP code
                       </div>
-                      <div className="font-medium">Springfield, IL 62701</div>
+                      <div className="font-medium">
+                        <p></p>
+                      </div>
                     </div>
 
                     <div className="p-2">
