@@ -1694,6 +1694,472 @@ const PdfViewer = () => {
               </div>
             </div>
           </div>
+
+          {/* Page 6 */}
+          <div className="p-8 leading-tight print:p-12 page-break">
+            {/* Header */}
+            <div className="">
+              <div className="flex items-start border-b-2 border-black">
+                <div className="w-40 border-r-2 border-black p-3">
+                  <div className="text-5xl font-medium leading-none">W-4</div>
+                  <div className="text-sm mt-1 leading-tight">Form</div>
+                  <div className="text-sm leading-tight">
+                    Department of the Treasury
+                  </div>
+                  <div className="text-sm leading-tight">
+                    Internal Revenue Service
+                  </div>
+                </div>
+                <div className="flex-1 p-4 text-center">
+                  <div className="text-2xl font-bold mb-2">
+                    Employee's Withholding Certificate
+                  </div>
+                  <div className="text-sm leading-tight font-semibold">
+                    <span className="font-semibold">Complete Form W-4</span> so
+                    that your employer can withhold the correct federal income
+                    tax from your pay.
+                  </div>
+                  <div className="text-sm font-semibold mt-1">
+                    Give Form W-4 to your employer.
+                  </div>
+                  <div className="text-sm mt-1 font-semibold">
+                    Your withholding is subject to review by the IRS.
+                  </div>
+                </div>
+                <div className="w-40 border-l-2 border-black p-3 text-right">
+                  <div className="text-sm">OMB No. 1545-0074</div>
+                  <div className="text-5xl font-medium text-center my-1">
+                    2025
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 1: Enter Personal Information */}
+              <div className="border-b-2 border-black">
+                <div className="flex">
+                  <div className="w-32 border-r-2 border-black p-3">
+                    <div className="font-bold text-sm leading-tight">
+                      Step 1:
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Enter</div>
+                    <div className="font-bold text-sm leading-tight">
+                      Personal
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      Information
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex border-b border-black">
+                      <div className="flex-1 border-r border-black p-2">
+                        <div className="mb-1">
+                          (a){" "}
+                          <span className="text-sm ml-1">
+                            First name and middle initial
+                          </span>
+                        </div>
+                        <div className="font-medium">John M</div>
+                      </div>
+                      <div className="flex-1 border-r border-black p-2">
+                        <div className="text-sm ml-1">Last name</div>
+                        <div className="font-medium">Smith</div>
+                      </div>
+                      <div className="w-56 p-2">
+                        <div className="text-sm mb-1">
+                          (b){" "}
+                          <span className="ml-1">Social security number</span>
+                        </div>
+                        <div className="font-medium">123-45-6789</div>
+                      </div>
+                    </div>
+
+                    <div className="flex border-b border-black">
+                      <div className="flex-1 border-r border-black p-2">
+                        <div className="text-sm mb-1">Address</div>
+                        <div className="font-medium">123 Main Street</div>
+                      </div>
+                      <div className="w-56 p-2 text-sm leading-tight">
+                        <div className="mb-0.5">Does your name match the</div>
+                        <div className="mb-0.5">
+                          name on your social security
+                        </div>
+                        <div className="mb-0.5">
+                          card? If not, to ensure you get
+                        </div>
+                        <div className="mb-0.5">credit for your earnings,</div>
+                        <div className="mb-0.5">
+                          contact SSA at 800-772-1213
+                        </div>
+                        <div>
+                          or go to{" "}
+                          <span className="font-semibold">www.ssa.gov</span>.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-b border-black p-2">
+                      <div className="text-sm mb-1">
+                        City or town, state, and ZIP code
+                      </div>
+                      <div className="font-medium">Springfield, IL 62701</div>
+                    </div>
+
+                    <div className="p-2">
+                      <div className="text-sm mb-2">(c)</div>
+                      <label className="flex items-start mb-1.5">
+                        <div className="w-4 h-4 border border-black mt-0.5 mr-2 flex items-center justify-center">
+                          <div className="w-2 h-2 bg-black"></div>
+                        </div>
+                        <span className="text-sm">
+                          Single or Married filing separately
+                        </span>
+                      </label>
+                      <label className="flex items-start mb-1.5">
+                        <div className="w-4 h-4 border border-black mt-0.5 mr-2"></div>
+                        <span className="text-sm">
+                          Married filing jointly or Qualifying surviving spouse
+                        </span>
+                      </label>
+                      <label className="flex items-start">
+                        <div className="w-4 h-4 border border-black mt-0.5 mr-2"></div>
+                        <span className="text-sm">
+                          Head of household (Check only if you're unmarried and
+                          pay more than half the costs of keeping up a home for
+                          yourself and a qualifying individual.)
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* TIP Section */}
+              <div className="p-3 text-sm leading-relaxed">
+                <p className="mb-2">
+                  <span className="font-bold">TIP:</span> Consider using the
+                  estimator at <span className="italic">www.irs.gov/W4App</span>{" "}
+                  to determine the most accurate withholding for the rest of the
+                  year if: you are completing this form after the beginning of
+                  the year; expect to work only part of the year; or have
+                  changes during the year in your marital status, number of jobs
+                  for you (and/or your spouse if married filing jointly),
+                  dependents, other income (not from jobs), deductions, or
+                  credits. Even if you use the estimator, you still need to
+                  complete and submit Form W-4 to your employer. At the
+                  beginning of next year, use the estimator again to recheck
+                  your withholding.
+                </p>
+                <p>
+                  <span className="font-bold">
+                    Complete Steps 2–4(b) on Form W-4 for only ONE of these
+                    jobs.
+                  </span>{" "}
+                  Leave those steps blank for the other jobs. (Your withholding
+                  will be most accurate if you complete Steps 2–4(b) on the Form
+                  W-4 for the highest paying job.){" "}
+                  <span className="font-bold">Skip to Step 5.</span> See page 2
+                  for more information on each step, who can claim exemption
+                  from withholding, and when to use the estimator at{" "}
+                  <span className="italic">www.irs.gov/W4App</span>.
+                </p>
+              </div>
+
+              {/* Step 2 */}
+              <div className="border-t-2 border-black">
+                <div className="flex">
+                  <div className="w-32 border-black p-3">
+                    <div className="font-bold text-sm leading-tight">
+                      Step 2:
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      Multiple Jobs
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      or Spouse
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Works</div>
+                  </div>
+                  <div className="flex-1 p-3 text-sm font-medium leading-relaxed">
+                    <p className="mb-2">
+                      <span className="font-semibold">
+                        Complete this step if you (1) hold more than one job at
+                        a time, or (2) are married filing jointly and your
+                        spouse also works.
+                      </span>{" "}
+                      The correct amount of withholding depends on income earned
+                      from all of these jobs.
+                    </p>
+                    <p className="mb-2">
+                      <span className="font-semibold">
+                        Do only one of the following.
+                      </span>
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-semibold">(a)</span> Use the
+                      estimator at{" "}
+                      <span className="italic">www.irs.gov/W4App</span> for the
+                      most accurate withholding for this step (and Steps 3–4).
+                      If you or your spouse have self-employment income, use
+                      this option; or
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-semibold">(b)</span> Use the
+                      Multiple Jobs Worksheet on page 3 and enter the result in
+                      Step 4(c) below; or
+                    </p>
+                    <p className="mb-2">
+                      <span className="font-semibold">(c)</span> If there are
+                      only two jobs total, you may check this box. Do the same
+                      on Form W-4 for the other job. This option is generally
+                      more accurate than (b) if pay at the lower paying job is
+                      more than half of the pay at the higher paying job.
+                      Otherwise, (b) is more accurate . . . . . . . . . . . . .
+                      . .
+                      <span className="inline-flex items-center ml-2 border border-black w-4 h-4"></span>
+                    </p>
+                  </div>
+                </div>
+                <p className="font-medium text-sm italic">
+                  Complete Steps 3–4(b) on Form W-4 for only ONE of these jobs.
+                  Leave those steps blank for the other jobs. (Your withholding
+                  will be most accurate if you complete Steps 3–4(b) on the Form
+                  W-4 for the highest paying job.)
+                </p>
+              </div>
+
+              {/* Step 3 */}
+              <div className="border-t-2 border-black">
+                <div className="flex">
+                  <div className="w-32 p-3">
+                    <div className="font-bold text-sm leading-tight">
+                      Step 3:
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Claim</div>
+                    <div className="font-bold text-sm leading-tight">
+                      Dependent
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      and Other
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      Credits
+                    </div>
+                  </div>
+                  <div className="flex-1 p-3">
+                    <p className="text-sm mb-3 leading-relaxed">
+                      If your total income will be $200,000 or less ($400,000 or
+                      less if married filing jointly):
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm">
+                        <span className="mr-2">
+                          Multiply the number of qualifying children under age
+                          17 by $2,000
+                        </span>
+                        <span className="mr-2 font-bold">$</span>
+                        <div className="w-32 border-b border-black px-1 font-medium">
+                          <p></p>
+                        </div>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <span className="mr-2">
+                          Multiply the number of other dependents by $500 . . .
+                        </span>
+                        <span className="mr-2 font-bold">$</span>
+                        <div className="w-32 border-b border-black px-1  font-medium">
+                          <p></p>
+                        </div>
+                      </div>
+                      <div className="flex items-center text-sm border-t border-black pt-2">
+                        <span className="mr-2 flex-1">
+                          Add the amounts above for qualifying children and
+                          other dependents. You may add to this the amount of
+                          any other credits. Enter the total here . . . . . . .
+                          . . .
+                        </span>
+                        <span className="mr-2 font-bold">3</span>
+                        <span className="mr-2 font-bold">$</span>
+                        <div className="w-32 border-b-2 border-black px-1  font-medium">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-48 border-l-2 border-black p-3 text-xs leading-tight">
+                    <div className="font-semibold mb-1">
+                      $0 if no dependents
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="border-t-2 border-black">
+                <div className="flex">
+                  <div className="w-32 border-black p-3 ">
+                    <div className="font-bold text-sm leading-tight">
+                      Step 4
+                    </div>
+                    <div className="font-bold text-sm leading-tight">
+                      (optional):
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Other</div>
+                    <div className="font-bold text-sm leading-tight">
+                      Adjustments
+                    </div>
+                  </div>
+                  <div className="flex-1 p-3">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start">
+                        <span className="font-semibold mr-2">(a)</span>
+                        <div className="flex-1">
+                          <p className="mb-2 leading-relaxed">
+                            <span className="font-semibold">
+                              Other income (not from jobs).
+                            </span>{" "}
+                            If you want tax withheld for other income you expect
+                            this year that won't have withholding, enter the
+                            amount of other income here. This may include
+                            interest, dividends, and retirement income . . . . .
+                            . . .
+                          </p>
+                          <div className="flex items-center">
+                            <span className="mr-2 font-bold">4(a)</span>
+                            <span className="mr-2 font-bold">$</span>
+                            <div className="w-32 border-b border-black px-1"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start border-t border-gray-300 pt-3">
+                        <span className="font-semibold mr-2">(b)</span>
+                        <div className="flex-1">
+                          <p className="mb-2 leading-relaxed">
+                            <span className="font-semibold">Deductions.</span>{" "}
+                            If you expect to claim deductions other than the
+                            standard deduction and want to reduce your
+                            withholding, use the Deductions Worksheet on page 3
+                            and enter the result here . . . . . . . . . . . . .
+                            . . . . . . . . . . . . .
+                          </p>
+                          <div className="flex items-center">
+                            <span className="mr-2 font-bold">4(b)</span>
+                            <span className="mr-2 font-bold">$</span>
+                            <div className="w-32 border-b border-black px-1"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start border-t border-gray-300 pt-3">
+                        <span className="font-semibold mr-2">(c)</span>
+                        <div className="flex-1">
+                          <p className="mb-2 leading-relaxed">
+                            <span className="font-semibold">
+                              Extra withholding.
+                            </span>{" "}
+                            Enter any additional tax you want withheld each pay
+                            period . . .
+                          </p>
+                          <div className="flex items-center">
+                            <span className="mr-2 font-bold">4(c)</span>
+                            <span className="mr-2 font-bold">$</span>
+                            <div className="w-32 border-b border-black px-1"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 5 */}
+              <div className="border-t-2 border-black">
+                <div className="flex">
+                  <div className="w-32  border-black p-3 ">
+                    <div className="font-bold text-sm leading-tight">
+                      Step 5:
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Sign</div>
+                    <div className="font-bold text-sm leading-tight">Here</div>
+                  </div>
+                  <div className="flex-1 p-3">
+                    <p className="text-xs mb-8 leading-relaxed">
+                      Under penalties of perjury, I declare that this
+                      certificate, to the best of my knowledge and belief, is
+                      true, correct, and complete.
+                    </p>
+                    <div className="flex gap-4 items-end mb-3">
+                      <div className="flex-1">
+                        <div className="border-b-2 border-black pb-1 font-medium italic px-1">
+                          <p></p>
+                        </div>
+                        <div className="text-sm mt-1">
+                          <span className="font-semibold">
+                            Employee's signature
+                          </span>{" "}
+                          (This form is not valid unless you sign it.)
+                        </div>
+                      </div>
+                      <div className="w-40">
+                        <div className="border-b-2 border-black pb-1 font-medium px-1">
+                          <p></p>
+                        </div>
+                        <div className="text-sm mt-1 font-semibold">Date</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Employers Only */}
+              <div className="border-t-2 border-black">
+                <div className="flex">
+                  <div className="w-32 border-r-2 border-black p-3 ">
+                    <div className="font-bold text-sm leading-tight">
+                      Employers
+                    </div>
+                    <div className="font-bold text-sm leading-tight">Only</div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex border-b border-black">
+                      <div className="flex-1 border-r border-black p-2">
+                        <div className="text-sm mb-1">
+                          Employer's name and address
+                        </div>
+                        <p></p>
+                      </div>
+                      <div className="w-48 border-r border-black p-2">
+                        <div className="text-sm mb-1">First date of</div>
+                        <div className="text-sm mb-5">employment</div>
+                        <p></p>
+                      </div>
+                      <div className="w-48 p-2">
+                        <div className="text-sm mb-1">
+                          Employer identification
+                        </div>
+                        <div className="text-sm mb-1">
+                          <p></p>
+                        </div>
+                        <div className="font-medium mt-2">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-black p-2 text-sm flex justify-between items-center">
+                <span>
+                  For Privacy Act and Paperwork Reduction Act Notice, see page
+                  3.
+                </span>
+                <span>Cat. No. 10220Q</span>
+                <span className="font-bold">Form W-4 (2025)</span>
+              </div>
+            </div>
+          </div>
         </div>
         {/* === END PRINTABLE CONTENT === */}
 
